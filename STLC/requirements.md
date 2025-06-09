@@ -49,3 +49,13 @@ detailed requirement: The user should get a modal when navigating the alcoholic 
 ### **3. Shipping Cost Changes (send this done to Marina on Slack)**
 
 **Requirement:** Free shipping for orders above a certain amount. Orders below this amount will incur a shipping fee.
+
+**Questions**:
+
+1. which amount is needed to qualify for free shipping?
+2. do we ship outside USA?
+3. do we have a postal code verification?
+4. how do we calculate the shipping cost?
+5. does the shipping cost change according to location?
+
+detailed requirement: Free shipping for orders above $XX. Orders below this amount will incur a shipping fee according calculated according to the post code of the purchase.
