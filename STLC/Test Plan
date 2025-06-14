@@ -6,8 +6,8 @@
 
 **What is the objective?**
 The objective of the webshop is for users to buy grocery store products online and get them delivered at home. 
-The addition of the new features allows the product to deliver according to standarized rules for alcohol consumption,
-to deliver within the country and abroad. Allow the users to rate the products accordingly. 
+The addition of the new features allows the product to be delivered according to standarized rules for alcohol consumption aka age restriction,
+to deliver within the country and abroad incurring shipping cost and allow the users to rate the products accordingly. 
 
 **User Base**
 
@@ -39,8 +39,6 @@ adding a rating from 1 to 5 stars to the product, registering user and have favo
 **Scope of Testing**
 
 - **In Scope: Which functionalities are in scope of testing?**
-    - Register and log in functionality.
-    - Age verification for account creation. 
     - Age verification for alcohol purchases without an account created.
     - Product rating system.
     - Shipping cost charges.
@@ -53,13 +51,19 @@ adding a rating from 1 to 5 stars to the product, registering user and have favo
 
 **What types of testing is necessary for the new functionalities?**
 
-- Functional Testing : this ensures log in/registration process working as expected.Validating user input, passwords,
-  handeling errors and confirming successful registration and log in. 
-- Regression Testing :
-- Performance Testing : how well the login/registration process scales under various loads and how quickly it responds.
-- Usability Testing : This involves evaluating how intuitive the login/registration process is for the end user. 
-- 2-BVA : to confirm eligibility of age. 
-- 
+- Functional Testing : to ensure age gate works as intended. Crucial to verify the systems ability to identify users age
+and grant or deny access accordingly. Verify users can submit ratings, view ratings and calculate the average rating correctly.
+Valid and invalid inputs for shipping cost test. Verify calculation of shipping cost according to postal code, national and international.
+- Regression Testing : ensure that the updates do not affect the overal funtionality of the product.
+- Performance Testing : how well does the product handle a large purchase without significant errors in shipping cost. How does the product hablde
+age verification process. Is this a complex or an easy process for the user? Does the process involve significat data processing?
+- Usability Testing : This involves evaluating how intuitive the rating system is to the user.
+- 2-BVA : to confirm eligibility of age. To confirm shipping cost applicable or free according to price.
+- Manual Testing : Simulate purchase of an item to verify the displayed shipping cost. Simulate birth date entry to verify the age restriction.
+Simulate rating a product to verify rating system. 
+- Acceptance testing : testing from the perspective of the end user aka Stakeholders to ensure verification system meets their specific requirements
+for age verification, for rating a product and for shipping cost. 
+- Mobile testing : verify that the products funcitonality isn't affected by mobile format.
 
 
 **Risks and Issues**
