@@ -57,5 +57,6 @@ detailed requirement: The user should get a modal when navigating the alcoholic 
 3. do we have a postal code verification?
 4. how do we calculate the shipping cost?
 5. does the shipping cost change according to location?
+6. show the user if they incurr in shipping cost or not.
 
 detailed requirement: Free shipping for orders above $XX. Orders below this amount will incur a shipping fee according calculated according to the post code of the purchase.
