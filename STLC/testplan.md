@@ -63,21 +63,22 @@ adding a rating from 1 to 5 stars to the product, registering user and have favo
 and grant or deny access accordingly. Verify users can submit ratings, view ratings and calculate the average rating correctly.
 Valid and invalid inputs for shipping cost test. Verify calculation of shipping cost according to postal code, national and international.
 
-
+- non-functional testing:
 
 
 Out of scope:
+
 regression testing:
-performance testing:
-- Usability Testing : This involves evaluating how intuitive the rating system is to the user. Is it complex or easy answer? Mobile testing : verify that the products 
-funcitonality isn't affected by mobile format.
+
+
+- Usability Testing : This involves evaluating how intuitive the rating system is to the user. Is it complex or easy answer?
+- Mobile testing : verify that the products funcitonality isn't affected by mobile format.
 - Acceptance testing : testing from the perspective of the end user aka Stakeholders to ensure verification system meets their specific requirements
 for age verification, for rating a product and for shipping cost. 
 
 **Risks and Issues**
 
-(what are some problems that I may run into? once I am automating, add what went wrong and what could be done better. I anticipate I will run 
-problems with cookies. Age verification window wont come after loeading the website again.)
+(what are some problems that I may run into? once I am automating, add what went wrong and what could be done better. I anticipate I will run problems with cookies. Age verification window wont come after loeading the website again.)
 
 - **Delays in development**
     - Mitigation: Implement a buffer period in the schedule.
