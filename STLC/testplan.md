@@ -5,6 +5,7 @@
 **Objective**
 
 **What is the objective?**
+
 The objective of the webshop is for users to buy grocery store products online and get them delivered at home. 
 The addition of the new features allows the product to be delivered according to standarized rules for alcohol consumption aka age restriction.
 We want to make sure that according to the German rules and regulations, we need people below 16 years of age to be unable to purchase alcohol,
