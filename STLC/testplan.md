@@ -7,11 +7,9 @@
 **What is the objective?**
 
 The objective of the webshop is for users to buy grocery store products online and get them delivered at home. 
-The addition of the new features allows the product to be delivered according to standarized rules for alcohol consumption aka age restriction.
-We want to make sure that according to the German rules and regulations, we need people below 16 years of age to be unable to purchase alcohol,
-so we need to add this feature to the website. 
-Deliver within the country and abroad incurring shipping cost and allow the users to rate the products accordingly, because 
-we see a lot of users stopping the process because users see shipping prices and assume it is a standard and decide to not buy.
+The addition of the first new features include the German regulations for Alcohol consumption, checking for ages below 16 years old and ensure they are unable to purchase alcohol, which is really important for the website performance. 
+The second new feature is the ability to deliver within the country and abroad incurring shipping cost and allow for shipping cost to be incurred if the user makes a purchase above $50 dollars for example. The shipping cost feature also needs to calculate the shipping cost accoriding to location and standard rates for fees delivery. We see a lot of users stopping the purchase process because users see shipping prices and assume it is a standard and decide to not buy.
+The third new feature is granting the user the option to rate the products after purchase. This is a very important feature for users to feel inclined to purchase products and to ensure the users the website is a legitimate webshop that is used by consumers for product purchase.
 
 **User Base**
 
@@ -19,14 +17,26 @@ we see a lot of users stopping the process because users see shipping prices and
 
 The product will be used by existing and new users of the webshop platform, including individuals aged 16 and above. 
 Our main user based are adults, our average user may be 25 years old, but we have from 18 and above registered users. We may have users
-that are minors, so we need to make a distinction to make sure minors dont purchase alcohol.
-(try to Identify the stakeholders for this website)
+that are minors, so we need to make a distinction to make sure minors dont purchase alcohol. 
+
+Our Stakeholders are everyone involved and interested on the process of the website development, website performance, website usage. 
+
+List of Stakeholders:
+
+Customers: Those who would be interested in purchasing the product, or invest in the product.
+Consumers: Users who will be utilising the product and directly interact with the software.
+Developers: Those who will write the code and develop the software.
+Testers: Those responsible for testing the product.
+Project Manager: Those who are in charge of overseeing the products completion and its testing process.
+Business Analyst: Those who define the requirements and ensure the product meets the expecations.
+Product Owners: Those in ownership of the creative vision and guide the product development.
+Management : those who make decisions about the products direction and resources.
 
 **Hardware and Software Specifications**
 
 - **Hardware Requirements:**
     - Devices: PCs, laptops, smartphones, tablets
-    - Specifications: Standard configurations for Android and iOS devices, desktops with minimum 4GB RAM, 2GHz processor
+    - Specifications: Standard configurations for  iOS devices, desktops with minimum 4GB RAM, 2GHz processor
 - **Software Requirements:**
     - Operating Systems: testing will be only performed in MacOS. 
     - Browsers: testing will be only perform in Chrome.
@@ -37,9 +47,9 @@ that are minors, so we need to make a distinction to make sure minors dont purch
 **What is the functionality of the product? Existing and to be added functionality.**
 (funcitonality is what has been tested before, new functionality is what is to be testes)
 
-The functionality of the product is to sell consumable products for daily life, food, drinks and home supplies. 
-The existing functionality considers the selection of products, the birth date entry to confirm age above 16, 
-adding a rating from 1 to 5 stars to the product, registering user and have favourite items saved. 
+The existing functionality of the product includes registering to the website as a user log in/register, to browse for products, to make a purchase.
+
+The added functionalities are confirm age above 16 as a alcohol purchase requirement, rating system from 1 to 5 stars available to users to rate the purchased products and ensuring the user pays a fair shipping cost according to location and price of purchase. 
 
 ### **2. Design the Test Strategy**
 
@@ -49,12 +59,15 @@ adding a rating from 1 to 5 stars to the product, registering user and have favo
     - Age verification for alcohol purchases without an account created.
     - Product rating system.
     - Shipping cost charges.
-- **Out of Scope: What is out of scope for testing?** (add the old funcionalities to the out of scope)
+- **Out of Scope: What is out of scope for testing?** 
     - Backend database operations not affecting the user interface.
     - user interface and product aesthetical design.
     - availability of products.
-    - Log in/ registration 
-
+    - Log in/ registration
+    - Purchasing a product.
+    - Webshop product browsing.
+    - customer service for users troubleshooting.
+    - 
 **Type of Testing**
 
 **What types of testing is necessary for the new functionalities?**
@@ -63,23 +76,22 @@ adding a rating from 1 to 5 stars to the product, registering user and have favo
 and grant or deny access accordingly. Verify users can submit ratings, view ratings and calculate the average rating correctly.
 Valid and invalid inputs for shipping cost test. Verify calculation of shipping cost according to postal code, national and international.
 
-- non-functional testing:
-
+- Regression Testing: retesting the product functionality after adding the new features to ensure the previous features are not affected by the addition of the new features and test that the system still meets all the requirements. 
 
 Out of scope:
 
-regression testing:
-
-
-- Usability Testing : This involves evaluating how intuitive the rating system is to the user. Is it complex or easy answer?
+- security testing : indentifying vulnerabilities and ensure the system is data protected.
+- Usability Testing : This involves evaluating how intuitive the rating system is to the user. Is it complex or easy to use?
 - Mobile testing : verify that the products funcitonality isn't affected by mobile format.
 - Acceptance testing : testing from the perspective of the end user aka Stakeholders to ensure verification system meets their specific requirements
 for age verification, for rating a product and for shipping cost. 
 
 **Risks and Issues**
 
-(what are some problems that I may run into? once I am automating, add what went wrong and what could be done better. I anticipate I will run problems with cookies. Age verification window wont come after loeading the website again.)
-
+- **Website functioning issues**
+     - pop up window for age verification may not come a second time after reloading the website.
+     - problems with cookies. if cookies aren't accepted fully, the website may not load all the information.
+     - loading time on estimating shipping cost was too long.
 - **Delays in development**
     - Mitigation: Implement a buffer period in the schedule.
 - **Lack of test data**
@@ -100,7 +112,7 @@ for age verification, for rating a product and for shipping cost.
 **Objectives and Outcomes**
 
 - **Functionality:** All features perform correctly according to specifications. Ensure the three new features work as intended.
-Ratings can be submitted, underaged people cannot purchase products, shipping cost work according to post code. With the result that
+Ratings can be submitted, underaged people cannot purchase alcoholic products, shipping cost work according to post code. With the result that
 we use local laws and we give more value to the customer.
 - **GUI:** The interface is intuitive, responsive, and free of defects. Verify that company standards are being used.
 - **Performance:** The platform meets performance benchmarks under load.
@@ -143,16 +155,16 @@ we move between test environments) Who is testing what on which environment?
 (update it to 2025, its a fantasy game, maybe more realistic hours)
 | Activity | Start Date | End Date | Environment | Responsible Person | Estimated Effort |
 | --- | --- | --- | --- | --- | --- |
-| Test Planning | 01/08/2024 | 05/08/2024 | All | Test Manager | 20 hours |
-| Test Case Design | 06/08/2024 | 15/08/2024 | All | QA Team | 40 hours |
-| Unit Testing | 16/08/2024 | 25/08/2024 | DEV | Development Team | 60 hours |
-| Integration Testing | 26/08/2024 | 30/08/2024 | TEST | QA Team | 30 hours |
-| System Testing | 01/09/2024 | 10/09/2024 | TEST | QA Team | 80 hours |
-| Regression Testing | 11/09/2024 | 15/09/2024 | TEST | QA Team | 40 hours |
-| Performance Testing | 16/09/2024 | 18/09/2024 | TEST | QA Team | 20 hours |
-| Security Testing | 19/09/2024 | 21/09/2024 | TEST | QA Team | 20 hours |
-| UAT | 22/09/2024 | 30/09/2024 | ACC | End Users | 50 hours |
-| Production Release | 01/10/2024 | 01/10/2024 | PROD | DevOps Team | 10 hours |
+| Test Planning | 01/08/2025 | 05/08/2025 | All | Test Manager | 20 hours |
+| Test Case Design | 06/08/2025 | 15/08/2025 | All | QA Team | 40 hours |
+| Unit Testing | 16/08/2025 | 25/08/2025 | DEV | Development Team | 60 hours |
+| Integration Testing | 26/08/2025 | 30/08/2025 | TEST | QA Team | 30 hours |
+| System Testing | 01/09/2025 | 10/09/2025 | TEST | QA Team | 80 hours |
+| Regression Testing | 11/09/2025 | 15/09/2025 | TEST | QA Team | 40 hours |
+| Performance Testing | 16/09/2025 | 18/09/2025 | TEST | QA Team | 20 hours |
+| Security Testing | 19/09/2025 | 21/09/2025 | TEST | QA Team | 20 hours |
+| UAT | 22/09/2024 | 30/09/2025 | ACC | End Users | 50 hours |
+| Production Release | 01/10/2025 | 01/10/2025 | PROD | DevOps Team | 10 hours |
 
 ### **8. Determine Test Deliverables**
 
