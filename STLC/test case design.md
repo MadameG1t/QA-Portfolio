@@ -74,15 +74,12 @@
 ### Test Cases:
 
 1. **Boundary Value Analysis**:
-    - **Test Case**: Verify the system calculates a free shipping cost for purchases above $20.
+    - **Test Case**: Verify the system calculates a free shipping cost for purchases above $21.
         - **Input**: User check out total purchase amount.
         - **Expected Outcome**: Message displayed Your shipping fee for this purchase if free.
 2. **Boundary Value Analysis**:
     - **Test Case**: Verify the purchase amount for $19.
         - **Input**: Total purchase of products is $19.
         - **Expected Outcome**: This purchase has additional shipping cost. Purchases above $20 get free shipping.
-3. **Boundary Value Analysis**:
-    - **Test Case**: Verify the purchase for $21.
-        - **Input**: Total purchse amount is $21.
-        - **Expected Outcome**: This purchase qualifies for free shipping. 
+
 
