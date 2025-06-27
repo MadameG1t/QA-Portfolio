@@ -3,7 +3,7 @@
 
 **New Added Features**
 
-### **1. Age Restriction for purchases**
+### **1. Age Restriction for purchases** (please adjust to my won requirements accordingly)
 
 **Test Design Techniques**: Boundary Value Analysis (BVA), Equivalence Partitioning (EP), Error Guessing
 
