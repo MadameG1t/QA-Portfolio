@@ -42,20 +42,29 @@
 
 1. **Positive Testing**:
     - **Test Case**: Verify the user can submit one star review.
-        - **Input**: Navigate to product and find the 5 star rating option.
+        - **Input**: Navigate to product and give 1 start rating.
         - **Expected Outcome**: one star review is stored and visible.
     - **Test Case**: Verify the user can submit two star review.
-        - **Input**: Navigate to product and find the 5 star rating option.
+        - **Input**: Navigate to product and submit two star review.
         - **Expected Outcome**: two star review is stored and visible.
     - **Test Case**: Verify the user can submit three star review.
-        - **Input**: Navigate to product and find the 5 star rating option.
+        - **Input**: Navigate to product and give three star reviews.
         - **Expected Outcome**: three star review is stored and visible.
     - **Test Case**: Verify the user can submit four star review.
-        - **Input**: Navigate to product and find the 5 star rating option.
+        - **Input**: Navigate to product and submit a 4 star review.
         - **Expected Outcome**: four star review is stored and visible.
     - **Test Case**: Verify the user can submit five star review.
-        - **Input**: Navigate to product and find the 5 star rating option.
+        - **Input**: Navigate to product and submit 5 star rating.
         - **Expected Outcome**: five star review is stored and visible.
+    - **Test Case**: Verify the user can submit a written review.
+        - **Input**: Navigate to product and submit a written review.
+        - **Expected Outcome**: written review is stored and visible.
+    - **Test Case**: Verify the user can edit a written feedback.
+        - **Input**: Navigate to product and edit a written feedback.
+        - **Expected Outcome**: edited feedback submitted and updated.
+ - **Test Case**: Verify the user can delete a written feedback.
+        - **Input**: Navigate to product and delete a written feedback.
+        - **Expected Outcome**:  feedback has been successfully deleted.
    **Negative Testing**:
     - **Test Case**: Verify the webshop can handle a Zero-star rating as invalid.
         - **Input**: Navigate to product and find the 5 star rating option.
@@ -69,7 +78,7 @@
 
 ### **3. Shipping Cost feature**
 
-**Test Design Techniques**: Boundary Value Analysis (BVA), 
+**Test Design Techniques**: Boundary Value Analysis (BVA), positive testing
 
 ### Test Cases:
 
@@ -81,5 +90,11 @@
     - **Test Case**: Verify the purchase amount for $19.
         - **Input**: Total purchase of products is $19.
         - **Expected Outcome**: This purchase has additional shipping cost. Purchases above $20 get free shipping.
+     
+3. Boundary value analysis for $20, what happens if you purchase $20?
+          
+3. Make sure that shipping prices adjust accordingly when an item is deleted.
+
+
 
 
