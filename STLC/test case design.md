@@ -10,20 +10,20 @@
 ### Test Cases:
 
 1. **Boundary Value Analysis**:
-    - **Test Case**: Verify user exactly 16 years old.
-        - **Input**: Date of Birth = (Today - 16 years)
+    - **Test Case**: Verify user exactly 18 years old.
+        - **Input**: Date of Birth = (Today - 18 years)
         - **Expected Outcome**: Age verification successful.
 2. **Boundary Value Analysis**:
-    - **Test Case**: Verify purchase eligibility for user just below 16 years old.
-        - **Input**: Date of Birth = (Today - 16 years + 1 day)
-        - **Expected Outcome**: Error message "You must be at least 16 years old to purchase a product."
+    - **Test Case**: Verify purchase eligibility for user just below 18 years old.
+        - **Input**: Date of Birth = (Today - 18 years + 1 day)
+        - **Expected Outcome**: Error message "You must be at least 18 years old to purchase a product."
 3. **Equivalence Partitioning**:
-    - **Test Case**: Verify aligibility for users below the age of 16.
-        - **Input**: Date of Birth = (Today - 15 years)
+    - **Test Case**: Verify aligibility for users below the age of 17.
+        - **Input**: Date of Birth = (Today - 16 years)
         - **Expected Outcome**: Error message displayed.
 4. **Equivalence Partitioning**:
-    - **Test Case**: Verify eligibility of purchase for users above the age of 16.
-        - **Input**: Date of Birth = (Today - 17 years)
+    - **Test Case**: Verify eligibility of purchase for users above the age of 18.
+        - **Input**: Date of Birth = (Today - 18 years)
         - **Expected Outcome**: You are of age.Now you can view and purchase products.
 5. **Error Guessing**:
     - **Test Case**: Verify system behavior when Date of Birth is not entered.
@@ -91,9 +91,14 @@
         - **Input**: Total purchase of products is $19.
         - **Expected Outcome**: This purchase has additional shipping cost. Purchases above $20 get free shipping.
      
-3. Boundary value analysis for $20, what happens if you purchase $20?
+3. **Boundary Value Analysis**:
+    - **Test Case**: Verify the purchase amount for $20.
+        - **Input**: Total purchase of products is $20.
+        - **Expected Outcome**: This purchase has additional shipping cost. Purchases above $20 get free shipping.
           
-3. Make sure that shipping prices adjust accordingly when an item is deleted.
+3. **Item removal testing**:
+   - **Input**: Verify that removing an item from the cart results in the item's price being deducted from the total amount to recalculate shipping cost.
+   - **Expected Outcome**: If price above $20 - free Shipping, If price below $20 - your purchase incurs a shipping service fee.
 
 
 
