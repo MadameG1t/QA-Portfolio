@@ -8,7 +8,7 @@
 
 The objective of the webshop is for users to buy grocery store products online and get them delivered at home. 
 The addition of the first new features include the German regulations for Alcohol consumption, checking for ages below 16 years old and ensure they are unable to purchase alcohol, which is really important for the website performance. 
-The second new feature is the ability to deliver within the country and abroad incurring shipping cost and allow for shipping cost to be incurred if the user makes a purchase above $50 dollars for example. The shipping cost feature also needs to calculate the shipping cost accoriding to location and standard rates for fees delivery. We see a lot of users stopping the purchase process because users see shipping prices and assume it is a standard and decide to not buy.
+The second new feature is the ability to deliver within the country and abroad incurring shipping cost and allow for shipping cost to be incurred if the user makes a purchase above $20 dollars for example. The shipping cost feature also needs to calculate the shipping cost accoriding to location and standard rates for fees delivery. We see a lot of users stopping the purchase process because users see shipping prices and assume it is a standard and decide to not buy.
 The third new feature is granting the user the option to rate the products after purchase. This is a very important feature for users to feel inclined to purchase products and to ensure the users the website is a legitimate webshop that is used by consumers for product purchase.
 
 **User Base**
