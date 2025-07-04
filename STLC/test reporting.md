@@ -1,17 +1,18 @@
-This document contains two example scenarios. Use a template that is alike for your own portfolio, but cover all the necessary scenarios! 
+This document contains two example scenarios tested.
+
 
 ### Scenario 1: Valid Date of Birth
 
-As a user of FindMate, I am able to sign up and log in when I am 16 years old.
+As a user of Grocerymate, I am able to sign up and log in when I am 18 years old.
 
 | Step# | Action                        | Expected outcome                                                                                   | OK/NOK | URL                      | Link to issue |
 |-------|-------------------------------|-----------------------------------------------------------------------------------------------------|--------|--------------------------|---------------|
-| 1     | Go to login page FindMate     | Login page appears                                                                                  | OK     | [https://findmate.masterschool.com/](https://findmate.masterschool.com/) |               |
+| 1     | Go to login page Grocerymate     | Login page appears                                                                                  | OK     | [https://grocerymate.masterschool.com/](https://grocery.masterschool.com/) |               |
 | 2     | Click on Sign up              | You are directed to the sign up page                                                                | OK     | /auth                    |               |
 | 3a    | Fill in RandomUsername        |                                                                                                     |        |                          |               |
 | 3b    | Fill 18-08-2008 as Date of Birth |                                                                                                     |        |                          |               |
 | 3c    | Write 'This is my Bio'        |                                                                                                     |        |                          |               |
-| 3d    | Write karin@faculty.masterschool.com as e-mail address |                                                                                                     |        |                          |               |
+| 3d    | Write gschadebrodt@student.masterschool.com as e-mail address |                                                                                                     |        |                          |               |
 | 3e    | Password is 'RandomPassword1' |                                                                                                     |        |                          |               |
 | 4     | Click sign up                 | You are directed to the login page. The e-mail and password are filled automatically                | OK     |                          |               |
 | 5     | Click on log in               | You are successfully logged in                                                                      | OK     |                          |               |
