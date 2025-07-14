@@ -3,7 +3,7 @@ This document contains two example scenarios tested.
 
 ### Scenario 1: Valid Date of Birth
 
-As a user of Grocerymate, I am able to sign up and log in when I am 18 years old.
+As a user of Grocerymate, I am able to purchase alcohol if I'm 18 years old.
 
 | Step# | Action                        | Expected outcome                                                                                   | OK/NOK | URL                      | Link to issue |
 |-------|-------------------------------|-----------------------------------------------------------------------------------------------------|--------|--------------------------|---------------|
