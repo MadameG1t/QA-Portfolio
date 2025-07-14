@@ -16,15 +16,15 @@ As a user of Grocerymate, I am able to purchase alcohol if I'm 18 years old.
 | 3c    | Age verification Successful       |  OK                                                                                                   |        |                          |               |
 
 
-![image](<img width="1170" height="2532" alt="IMG_0465" src="https://github.com/user-attachments/assets/79535397-fac3-45e7-801e-9b1319d5aaff" />
+![image](<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/7313f2c9-b90d-4c6c-8bc4-41e9db6d73e5" />
 )
-![image](<img width="1170" height="2532" alt="IMG_0466" src="https://github.com/user-attachments/assets/f3c44225-2dad-4997-95e7-8857e4c37ac5" />
+![image](<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/20676b28-5b45-4c85-987c-0fbd3f3111be" />
 )
-![image](<img width="1170" height="2532" alt="IMG_0469" src="https://github.com/user-attachments/assets/7e05ce07-8820-4ba0-bfa2-50a9883c677e" />
+![image](<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/e311a6df-05aa-4cf7-b7d1-0caeed6dd350" />
 )
-![image](<img width="1170" height="2532" alt="IMG_0470" src="https://github.com/user-attachments/assets/e429406b-aea9-4f14-ab73-7da5a88f2ea3" />
+![image](<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/7539a008-b782-4ca1-82b5-5211b25da787" />
 )
-![image](<img width="1170" height="2532" alt="IMG_0471" src="https://github.com/user-attachments/assets/939a943d-63fe-4021-9b51-127ba0b50077" />)
+![image](<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/3c5a806b-b801-477d-ae0b-d9fa9a83acad" />)
 
 
 ### Scenario 2: Invalid Date of Birth
