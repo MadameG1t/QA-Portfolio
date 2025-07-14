@@ -30,7 +30,7 @@ As a user of Grocerymate, I am able to purchase alcohol if I'm 18 years old.
 
 ### Scenario 2: Invalid Date of Birth
 
-As a user of GroceryMate, I am not able to purchase alcohol if Im under 18 years old.
+As a user of GroceryMate, I am not able to purchase alcohol if Im a little under 18 years old.
 
 | Step# | Action                               | Expected outcome                                           | OK/NOK | URL                                                | Link to issue               |
 |-------|--------------------------------------|------------------------------------------------------------|--------|----------------------------------------------------|-----------------------------|
@@ -38,4 +38,10 @@ As a user of GroceryMate, I am not able to purchase alcohol if Im under 18 years
 | 2     | Click on Sign up                     | You are directed to the sign up page                       | OK     | /auth                                              |                             |
 | 3a    | Fill in 'Age verification modal'|                                                            |        |                                                    |                             |
 | 3b    | Fill 19-08-2007 as Date of Birth     |                                                            |        |                                                    |                             |                                 |                             |
-| 4     | Error Message                        | You are not 18+ years old.  | NOK    |                                                    | |
+| 4     | Error Message                        | You are underage. You can still browse the site but you cannot view alcohol products.  | OK    |                                                    | |
+
+<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/7d195516-2f7f-45de-8497-b58d38df4176" />
+
+<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/57438c87-3d05-4ce7-9dfb-a6ac9da717e2" />
+
+<img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/b15886ba-1d62-4a30-888c-9bac551255ca" />
