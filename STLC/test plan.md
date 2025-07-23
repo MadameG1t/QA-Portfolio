@@ -4,7 +4,7 @@
 
 **Objective**
 
-**What is the objective?**
+**What is the objective?** (feedback: too much for the objective. We need to write the objective of the product. I can name the features but do not write so extensively)
 
 The objective of the webshop is for users to buy grocery store products online and get them delivered at home. 
 The addition of the first new features include the German regulations for Alcohol consumption, checking for ages below 16 years old and ensure they are unable to purchase alcohol, which is really important for the website performance. 
@@ -13,7 +13,7 @@ The third new feature is granting the user the option to rate the products after
 
 **User Base**
 
-**Who will the product be used by? Who are your user stakeholders?**
+**Who will the product be used by? Who are your user stakeholders?** (you dont need to explain the list of stakeholder)
 
 The product will be used by existing and new users of the webshop platform, including individuals aged 16 and above. 
 Our main user based are adults, our average user may be 25 years old, but we have from 18 and above registered users. We may have users
@@ -21,7 +21,7 @@ that are minors, so we need to make a distinction to make sure minors dont purch
 
 Our Stakeholders are everyone involved and interested on the process of the website development, website performance, website usage. 
 
-List of Stakeholders:
+List of Stakeholders: (this part is not necessary)
 
 Customers: Those who would be interested in purchasing the product, or invest in the product.
 Consumers: Users who will be utilising the product and directly interact with the software.
@@ -45,11 +45,12 @@ Management : those who make decisions about the products direction and resources
 **Product Functionality**
 
 **What is the functionality of the product? Existing and to be added functionality.**
-(funcitonality is what has been tested before, new functionality is what is to be testes)
+(funcitonality is what has been tested before, new functionality is what is to be testes)(mkae bullet points on this part)
 
 The existing functionality of the product includes registering to the website as a user log in/register, to browse for products, to make a purchase.
 
-The added functionalities are confirm age above 16 as a alcohol purchase requirement, rating system from 1 to 5 stars available to users to rate the purchased products and ensuring the user pays a fair shipping cost according to location and price of purchase. 
+
+The added functionalities are confirm age above 18 as a alcohol purchase requirement, rating system from 1 to 5 stars available to users to rate the purchased products and ensuring the user pays a fair shipping cost according to location and price of purchase. 
 
 ### **2. Design the Test Strategy**
 
@@ -70,7 +71,7 @@ The added functionalities are confirm age above 16 as a alcohol purchase require
     - 
 **Type of Testing**
 
-**What types of testing is necessary for the new functionalities?**
+**What types of testing is necessary for the new functionalities?** (perhaps include performance testing)
 
 - Functional Testing : to ensure age gate works as intended. Crucial to verify the systems ability to identify users age
 and grant or deny access accordingly. Verify users can submit ratings, view ratings and calculate the average rating correctly.
