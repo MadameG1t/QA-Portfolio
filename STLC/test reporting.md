@@ -45,3 +45,16 @@ As a user of GroceryMate, I am not able to purchase alcohol if Im a little under
 <img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/57438c87-3d05-4ce7-9dfb-a6ac9da717e2" />
 
 <img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/b15886ba-1d62-4a30-888c-9bac551255ca" />
+
+### Scenario 2: Invalid Date of Birth
+
+As a user of GroceryMate, I am not able to purchase alcohol if Im a little under 18 years old.
+
+| Step# | Action                               | Expected outcome                                           | OK/NOK | URL                                                | Link to issue               |
+|-------|--------------------------------------|------------------------------------------------------------|--------|----------------------------------------------------|-----------------------------|
+| 1     | Go to login page Grocerymate            | Login page appears                                         | OK     | [https://findmate.masterschool.com/](https://grocerymate.masterschool.com/)     |                             |
+| 2     | Click on Sign up                     | You are directed to the sign up page                       | OK     | /auth                                              |                             |
+| 3a    | Fill in 'Age verification modal'|                                                            |        |                                                    |                             |
+| 3b    | Fill 19-08-2007 as Date of Birth     |                                                            |        |                                                    |                             |                                 |                             |
+| 4     | Error Message                        | You are underage. You can still browse the site but you cannot view alcohol products.  | OK    |                                                    | |
+
