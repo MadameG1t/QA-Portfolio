@@ -64,7 +64,7 @@ As a user of GroceryMate, I am not able to purchase alcohol if Im a little under
 | 1     | Go to login page Grocerymate            | Login page appears                                         | OK     | [https://findmate.masterschool.com/](https://grocerymate.masterschool.com/)     |                             |
 | 2     | Click on Sign up                     | You are directed to the sign up page                       | OK     | /auth                                              |                             |
 | 3a    | Fill in 'Age verification modal'|                                                            |        |                                                    |                             |
-| 3b    | Fill 19-08-2007 as Date of Birth     |                                                            |        |                                                    |                             |                                 |                             |
+| 3b    | Fill 13-09-2007 as Date of Birth     |                                                            |        |                                                    |                             |                                 |                             |
 | 4     | Error Message                        | You are underage. You can still browse the site but you cannot view alcohol products.  | OK    |                                                    | |
 
 
