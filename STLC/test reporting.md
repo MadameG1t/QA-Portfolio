@@ -208,4 +208,14 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 
 <img width="1170" height="2532" alt="IMG_0794" src="https://github.com/user-attachments/assets/cd049e17-0526-41fc-b9e7-b06d74d18a62" />
 
+### Scenario 13: Verify Shipment fee recalculation once an item is removed from the shopping cart.
 
+
+
+| Step# | Action                               | Expected outcome                                           | OK/NOK | URL                                                | Link to issue               |
+|-------|--------------------------------------|------------------------------------------------------------|--------|----------------------------------------------------|-----------------------------|
+| 1     | Go to login page Grocerymate            | Login page appears                                         | OK     | [https://findmate.masterschool.com/](https://grocerymate.masterschool.com/)     |                             |
+| 2     | Click on Sign up                     | You are directed to the sign up page                       | OK     | /auth                                              |                             |
+| 3a    | Select product and reduce the purchase quantity|                                                            |        |                                                    |                             |
+| 3b    | Shipment calculation for under 20 euro basket should be 5 euro |                                                            |   NOK     |                                                    |                             |                                 |                             | https://github.com/MadameG1t/QA-Portfolio/issues/6
+| 4     | message at the bottom                  |Free shipment if your purchase is 20 eu or more. | OK    | 
