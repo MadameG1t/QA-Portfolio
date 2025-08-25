@@ -72,7 +72,7 @@ As a user of GroceryMate, I am not able to purchase alcohol if Im a little under
 
 <img width="1170" height="2532" alt="Image" src="https://github.com/user-attachments/assets/b15886ba-1d62-4a30-888c-9bac551255ca" />
 
-### Scenario 4: Invalid Date of Birth
+### Scenario 4: Invalid Date of Birth - user younger than 18 years old by one day.
 
 As a user of GroceryMate, I am not able to purchase alcohol if one day younger than 18 years old.
 
@@ -87,7 +87,7 @@ As a user of GroceryMate, I am not able to purchase alcohol if one day younger t
 <img width="1170" height="2532" alt="IMG_0828" src="https://github.com/user-attachments/assets/62961462-8280-4c44-9edb-bd23f61d16d0" />
 <img width="1170" height="2532" alt="IMG_0829" src="https://github.com/user-attachments/assets/10b0a7cf-4f64-42c1-b118-394efae59f75" />
 
-### Scenario 5: Valid Date of Birth
+### Scenario 5: Valid Date of Birth. User exact 18 years old.
 
 As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old today.
 
@@ -114,8 +114,19 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 | 3b    | Leave blank the age verification modal     |                                                            |        |                                                    |                             |                                 |                             |
 | 4     | Error Message                        | Invalid input. Please enter a date of birth in DD-MM-YYYY format.  | NOK    |   https://github.com/MadameG1t/QA-Portfolio/issues/3
 
+### Scenario 7: Invalid Date of Birth : user entry invalid format.
 
-### Scenario 7: Entry of a star rating system with comment.
+
+
+| Step# | Action                               | Expected outcome                                           | OK/NOK | URL                                                | Link to issue               |
+|-------|--------------------------------------|------------------------------------------------------------|--------|----------------------------------------------------|-----------------------------|
+| 1     | Go to login page Grocerymate            | Login page appears                                         | OK     | [https://findmate.masterschool.com/](https://grocerymate.masterschool.com/)     |                             |
+| 2     | Click on Sign up                     | You are directed to the sign up page                       | OK     | /auth                                              |                             |
+| 3a    | Fill in 'Age verification modal'|                                                            |        |                                                    |                             |
+| 3b    | Enter invalid format "DD/MM/YYYY"     |                                                            |        |                                                    |                             |                                 |                             |
+| 4     | Error Message                        | Invalid input. Please enter a date of birth in DD-MM-YYYY format.  | NOK    |   https://github.com/MadameG1t/QA-Portfolio/issues/4
+
+### Scenario 8: Entry of a star rating system with comment.
 
 
 
@@ -132,7 +143,7 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 <img width="1170" height="2532" alt="IMG_0783" src="https://github.com/user-attachments/assets/b8bae386-65da-4531-92c4-0724dfa4f675" />
 <img width="1170" height="2532" alt="IMG_0784" src="https://github.com/user-attachments/assets/487f93f6-4caf-4552-bf0c-2f95f1b20b86" />
 
-### Scenario 8: Verify user can delete star rating and comment entry.
+### Scenario 9: Verify user can delete star rating and comment entry.
 
 
 
@@ -148,7 +159,7 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 <img width="1170" height="2532" alt="IMG_0785" src="https://github.com/user-attachments/assets/53d0fc3f-f074-4861-a818-98dc0739aa73" />
 <img width="1170" height="2532" alt="IMG_0786" src="https://github.com/user-attachments/assets/e8cc6fc3-8ff2-4b7e-b8fd-141727c4b7c9" />
 
-### Scenario 9: Verify user can delete star rating and comment entry.
+### Scenario 10: Verify user can delete star rating and comment entry.
 
 
 
@@ -166,7 +177,7 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 <img width="1170" height="2532" alt="IMG_0788" src="https://github.com/user-attachments/assets/46c0d71e-951d-495e-860b-a0de80ba2ee5" />
 
 
-### Scenario 10: Verify user can edit star rating and comment entry.
+### Scenario 11: Verify user can edit star rating and comment entry.
 
 
 
@@ -182,7 +193,7 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 <img width="1170" height="2532" alt="IMG_0790" src="https://github.com/user-attachments/assets/e8cdaf9c-f482-4c24-8809-4ecef32fe489" />
 <img width="1170" height="2532" alt="IMG_0791" src="https://github.com/user-attachments/assets/04ea1985-9376-48aa-8c2f-b164e7ca5fdc" />
 
-### Scenario 11: Verify Shipment fee is Zero for purchases equal to 20euros.
+### Scenario 12: Verify Shipment fee is Zero for purchases equal to 20euros.
 
 
 
