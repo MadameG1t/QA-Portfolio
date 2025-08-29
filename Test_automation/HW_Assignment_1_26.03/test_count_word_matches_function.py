@@ -12,7 +12,7 @@ import pytest
     ("a a a","a",3)
 ])
 
-def test_count_word_matches_function1(text,target,expected):
+def test_count_word_matches_function_1(text,target,expected):
     assert count_word_matches_function.count_word_matches(text,target) == expected
 
 '''
