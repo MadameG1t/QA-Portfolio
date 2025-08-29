@@ -3,13 +3,13 @@ import pytest
 
 
 @pytest.mark.parametrize("text,target,expected",[
-    ("text="The cat sat on the mat"","target="cat"","Expected`1`"),
-    ("text="Dog dog DOG dOg"","target="dog"","Expected `4`"),
-    ("text="Hello world"", "target="world"","Expected `1`"),
-    ("text="hello hello HELLO"", "target="hello"","Expected `3`"),
-    ("text="No matches here"", "target="yes"","Expected `0`"),
-    ("text="catcat cat catdog"", "target="cat"","Expected `1`"),
-    ("text="a a a"", "target="a"","Expected `3`")
+    ("The cat sat on the mat","cat",1),
+    ("Dog dog DOG dOg","dog",4),
+    ("Hello world","world",1),
+    ("hello hello HELLO","hello", 3),
+    ("No matches here","yes",0),
+    ("catcat cat catdog","cat",1),
+    ("a a a","a",3)
 ])
 
 def test_count_word_matches_function1(text,target,expected):
