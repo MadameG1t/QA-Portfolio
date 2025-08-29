@@ -108,13 +108,13 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 
 ### Scenario 7: Invalid Date of Birth : user entry invalid format.
 
-| Step# | Action                            | Expected outcome                                                  | OK/NOK | URL                                                                         | Link to issue |
-|-------|-----------------------------------|-------------------------------------------------------------------|--------|-----------------------------------------------------------------------------|---------------|
+| Step# | Action                            | Expected outcome                                                  | OK/NOK | URL                                                                    | Link to issue |
+|-------|-----------------------------------|-------------------------------------------------------------------|--------|------------------------------------------------------------------------|---------------|
 | 1     | Go to login page Grocerymate      | Login page appears                                                | OK     | [https://findmate.masterschool.com/](https://grocerymate.masterschool.com/) |               |
-| 2     | Click on Sign up                  | You are directed to the sign up page                              | OK     | /auth                                                                       |               |
-| 3a    | Fill in 'Age verification modal'  |                                                                   |        |                                                                             |               |
-| 3b    | Enter invalid format "DD/MM/YYYY" |                                                                   |        |                                                                             |               |                                 |                             |
-| 4     | Error Message                     | Invalid input. Please enter a date of birth in DD-MM-YYYY format. | NOK    | https://github.com/MadameG1t/QA-Portfolio/issues/4                          
+| 2     | Click on Sign up                  | You are directed to the sign up page                              | OK     |                                                                        |               |
+| 3a    | Fill in 'Age verification modal'  |                                                                   |        |                                                                        |               |
+| 3b    | Enter invalid format "DD/MM/YYYY" |                                                                   |        |                                                                        |               |                                 |                             |
+| 4     | Error Message                     | Invalid input. Please enter a date of birth in DD-MM-YYYY format. | NOK    |                           |https://github.com/MadameG1t/QA-Portfolio/issues/4|
 
 ### Scenario 8: Entry of a star rating system with comment.
 
@@ -124,7 +124,7 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 | 2     | Click on Sign up                                 | You are directed to the sign up page           | OK     | /auth                                                                       |               |
 | 3a    | Fill in 'Star rating system and comment modal'   |                                                |        |                                                                             |               |
 | 3b    | Select 5 stars and add a comment to the product. |                                                |        |                                                                             |               |                                 |                             |
-| 4     | Star and comment                                 | My 5 star rating and a comment to the product. | NOK    | https://github.com/MadameG1t/QA-Portfolio/issues/5                          
+| 4     | Star and comment                                 | My 5 star rating and a comment to the product. | NOK    |                         |https://github.com/MadameG1t/QA-Portfolio/issues/5  |
 
 <img width="1170" height="2532" alt="IMG_0783" src="https://github.com/user-attachments/assets/b8bae386-65da-4531-92c4-0724dfa4f675" />
 <img width="1170" height="2532" alt="IMG_0784" src="https://github.com/user-attachments/assets/487f93f6-4caf-4552-bf0c-2f95f1b20b86" />
@@ -188,5 +188,5 @@ As a user of GroceryMate, I am able to purchase alcohol if I turned 18 years old
 | 1     | Go to login page Grocerymate                                   | Login page appears                               | OK     | [https://findmate.masterschool.com/](https://grocerymate.masterschool.com/) |               |
 | 2     | Click on Sign up                                               | You are directed to the sign up page             | OK     | /auth                                                                       |               |
 | 3a    | Select product and reduce the purchase quantity                |                                                  |        |                                                                             |               |
-| 3b    | Shipment calculation for under 20 euro basket should be 5 euro |                                                  | NOK    | https://github.com/MadameG1t/QA-Portfolio/issues/6                          |               |                                 |                             | 
+| 3b    | Shipment calculation for under 20 euro basket should be 5 euro |                                                  | NOK    |                         |     https://github.com/MadameG1t/QA-Portfolio/issues/6          |                                 |                             | 
 | 4     | message at the bottom                                          | Free shipment if your purchase is 20 eu or more. | OK     | 
