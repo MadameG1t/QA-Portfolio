@@ -1,5 +1,3 @@
-from nis import match
-
 from count_word_matches_function import count_word_matches
 import pytest
 
