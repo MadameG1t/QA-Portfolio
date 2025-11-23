@@ -18,3 +18,6 @@ def register_user_part_1():
 
     # Maximize the window for full view
     driver.maximize_window()
+
+
+
