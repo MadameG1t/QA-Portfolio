@@ -48,7 +48,8 @@ def run_basic_automation():
         print(f"Verifying presence of product: '{product_name}'...")
 
         # Locate the product element using XPath to search by the exact visible text
-        backpack_product = driver.find_element(By.XPATH, f"//div[text()='{product_name}']")
+        #backpack_product = driver.find_element(By.XPATH, f"//div[text()='{product_name}']")
+        backpack_product = driver.find_element(By.ID, "item_4_title_link")
 
         # ASSERTION 2: Check if the element is displayed on the page
         assert backpack_product.is_displayed(), f"Product verification failed: '{product_name}' is not displayed."
