@@ -14,7 +14,7 @@ def driver():
     yield driver
     driver.quit()
 
-@pytest.mark.parameterized("username, password",
+@pytest.mark.parametrized("username, password",
                          [
                              ("standard_user","secret_sauce" ),
                              ("locked_out_user", "secret_sauce"),

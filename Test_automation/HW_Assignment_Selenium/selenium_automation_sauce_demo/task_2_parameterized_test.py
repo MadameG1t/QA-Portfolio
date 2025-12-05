@@ -6,7 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 # Note: The required fixtures and parameters (browser_driver, test_user, expected_success)
 # are imported automatically by PyTest from the conftest.py file.
 
-def test_login_parameterized(browser_driver, test_user, expected_success):
+def test_login_parametrized(browser_driver, test_user, expected_success):
     """
     Tests login functionality with parameterized users.
 
