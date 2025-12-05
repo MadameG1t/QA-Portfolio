@@ -14,7 +14,7 @@ def driver():
     yield driver
     driver.quit()
 
-@pytest.mark.parametrized("username, password",
+@pytest.mark.parametrize("username, password",
                          [
                              ("standard_user","secret_sauce" ),
                              ("locked_out_user", "secret_sauce"),
@@ -40,10 +40,10 @@ def test_run_basic_automation(driver, username, password):
         print("Entering credentials...")
 
         # Enter Username: Located by ID
-        driver.find_element(By.ID, "user-name").send_keys("username")
+        driver.find_element(By.ID, "user-name").send_keys(username)
 
         # Enter Password: Located by ID
-        driver.find_element(By.ID, "password").send_keys("password")
+        driver.find_element(By.ID, "password").send_keys(password)
 
         # Click the Login button: Located by ID
         driver.find_element(By.ID, "login-button").click()
