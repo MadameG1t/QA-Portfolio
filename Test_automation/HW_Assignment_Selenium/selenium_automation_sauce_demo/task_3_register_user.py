@@ -1,3 +1,4 @@
+from select import select
 
 import pytest
 from selenium import webdriver
@@ -6,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import Select
 import re
 import time
 
@@ -113,28 +115,35 @@ def test_register_user_part_1(name,email):
     assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='months']").is_displayed()
     assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='years']").is_displayed()
 
-    #close browser at the end.
-    driver.quit()
-"""
-
     # 10. Select checkbox 'Sign up for our newsletter!'
     driver.find_element(By.ID, "newsletter").click()
 
     # 11. Select checkbox 'Receive special offers from our partners!'
-    driver.find_element(By.ID, "optin").click()
+    driver.find_element(By.ID, "option").click()
 
     # 12. Fill address details
-    driver.find_element(By.ID, "first_name").send_keys(FIRST_NAME)
-    driver.find_element(By.ID, "last_name").send_keys(LAST_NAME)
-    driver.find_element(By.ID, "company").send_keys(COMPANY)
-    driver.find_element(By.ID, "address1").send_keys(ADDRESS1)
-    driver.find_element(By.ID, "address2").send_keys(ADDRESS2)
+    driver.find_element(By.ID, "first_name").send_keys("gretchen")
+    driver.find_element(By.ID, "last_name").send_keys("Schadebrodt")
+    driver.find_element(By.ID, "company").send_keys("N/A")
+    driver.find_element(By.ID, "address1").send_keys("Schwedter Str. 14")
+    driver.find_element(By.ID, "address2").send_keys("4")
 
-    Select(driver.find_element(By.ID, "country")).select_by_visible_text(COUNTRY)
-    driver.find_element(By.ID, "state").send_keys(STATE)
-    driver.find_element(By.ID, "city").send_keys(CITY)
-    driver.find_element(By.ID, "zipcode").send_keys(ZIPCODE)
-    driver.find_element(By.ID, "mobile_number").send_keys(MOBILE)
+    Select(driver.find_element(By.ID, "country")).select_by_value("germany")
+    driver.find_element(By.ID, "state").send_keys("Berlin")
+    driver.find_element(By.ID, "city").send_keys("Berlin")
+    driver.find_element(By.ID, "zipcode").send_keys("10119")
+    driver.find_element(By.ID, "mobile_number").send_keys("015167195071")
+
+
+    #close browser at the end.
+    driver.quit()
+"""
+
+    
+
+    
+
+    
 
     # 13. Click 'Create Account' button
     driver.find_element(By.CSS_SELECTOR, "button[data-qa='create-account']").click()
