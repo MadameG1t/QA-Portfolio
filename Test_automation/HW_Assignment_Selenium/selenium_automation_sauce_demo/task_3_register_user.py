@@ -21,6 +21,7 @@ def test_register_user_part_1(name,email):
     # 1. Initialize the WebDriver
     driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     driver.implicitly_wait(10) # Set implicit wait time
+    wait = WebDriverWait(driver, 10)
 
     # 2. Navigate the URL
     url = 'http://automationexercise.com'
@@ -76,23 +77,26 @@ def test_register_user_part_1(name,email):
     # 7. Click 'Signup' button
     driver.find_element(By.CSS_SELECTOR, "button[data-qa='signup-button']").click()
 
+    # 8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
+    wait.until(EC.visibility_of_element_located(
+        (By.XPATH, "//*[contains(., 'Enter Account Information')]")
+    ))
+
+    #9. Fill details : Title, Name, Email, Password, Date of birth
+    driver.find_element(By.CLASS_NAME, "clearfix" ).click()
+    driver.find_element(By.CSS_SELECTOR, "input[data-qa='name']").send_keys(name)
+    driver.find_element(By.CSS_SELECTOR, "input[data-qa='email']").send_keys(email)
+    driver.find_element(By.CSS_SELECTOR, "input[data-qa='password']").click()
+
+    #date of birth by day, month, year
+    driver.find_element(By.CSS_SELECTOR, "input[data-qa='day']").click()
+    driver.find_element(By.CSS_SELECTOR, "input[data-qa='months']").click()
+    driver.find_element(By.CSS_SELECTOR, "input[data-qa='years']").click()
+
+
     #close browser at the end.
     driver.quit()
 """
-    # 8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
-    wait.until(EC.visibility_of_element_located(
-        (By.XPATH, "//*[contains(text(),'ENTER ACCOUNT INFORMATION') or contains(text(),'Enter Account Information')]")
-    ))
-
-    # 9. Fill details: Title, Name, Email, Password, Date of birth
-    # Title
-    driver.find_element(By.ID, "id_gender1").click()    # Mr. (id_gender2 for Mrs.)
-    # Password
-    driver.find_element(By.ID, "password").send_keys(PASSWORD)
-    # Date of birth
-    Select(driver.find_element(By.ID, "days")).select_by_value("10")
-    Select(driver.find_element(By.ID, "months")).select_by_value("5")   # May
-    Select(driver.find_element(By.ID, "years")).select_by_value("1990")
 
     # 10. Select checkbox 'Sign up for our newsletter!'
     driver.find_element(By.ID, "newsletter").click()
