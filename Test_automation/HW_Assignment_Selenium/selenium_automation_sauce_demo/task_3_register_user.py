@@ -108,11 +108,10 @@ def test_register_user_part_1(name,email):
 
     time.sleep(4)
 
-    #date of birth by day, month, year
-    driver.find_element(By.CSS_SELECTOR, "input[data-qa='day']").click()
-    driver.find_element(By.CSS_SELECTOR, "input[data-qa='months']").click()
-    driver.find_element(By.CSS_SELECTOR, "input[data-qa='years']").click()
-
+    # Verify Day, Month, Year dropdowns are visible
+    assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='days']").is_displayed()
+    assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='months']").is_displayed()
+    assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='years']").is_displayed()
 
     #close browser at the end.
     driver.quit()
