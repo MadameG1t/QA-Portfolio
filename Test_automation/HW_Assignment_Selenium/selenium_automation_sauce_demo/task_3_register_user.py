@@ -83,10 +83,30 @@ def test_register_user_part_1(name,email):
     ))
 
     #9. Fill details : Title, Name, Email, Password, Date of birth
-    driver.find_element(By.CLASS_NAME, "clearfix" ).click()
-    driver.find_element(By.CSS_SELECTOR, "input[data-qa='name']").send_keys(name)
-    driver.find_element(By.CSS_SELECTOR, "input[data-qa='email']").send_keys(email)
-    driver.find_element(By.CSS_SELECTOR, "input[data-qa='password']").click()
+    #verify title section is visible
+    assert driver.find_element(By.ID, "id_gender1").is_displayed()
+    assert driver.find_element(By.ID, "id_gender2").is_displayed()
+
+    #Title select Mr or Mrs
+    driver.find_element(By.CSS_SELECTOR, "label[for='id_gender1']").click()
+    driver.find_element(By.CSS_SELECTOR, "label[for='id_gender2']").click()
+
+    #Name box
+    name_on_form = driver.find_element(By.CSS_SELECTOR, "input[data-qa='name']")
+    assert name_on_form.get_attribute("value") == name
+    #email box
+    email_on_form = driver.find_element(By.CSS_SELECTOR, "input[data-qa='email']")
+    assert email_on_form.get_attribute("value") == email
+    #password
+    password_input = driver.find_element(By.CSS_SELECTOR, "input[data-qa='password']")
+    assert password_input.is_displayed() and password_input.is_enabled(), \
+        "Password input is not ready for typing"
+
+    password_input.click()
+    password_input.send_keys("TestPassword123")
+    assert password_input.get_attribute("value") == "TestPassword123"
+
+    time.sleep(4)
 
     #date of birth by day, month, year
     driver.find_element(By.CSS_SELECTOR, "input[data-qa='day']").click()
