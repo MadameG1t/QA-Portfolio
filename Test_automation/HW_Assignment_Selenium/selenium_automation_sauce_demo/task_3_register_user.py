@@ -38,6 +38,23 @@ def test_register_user_part_1(name,email):
     driver.find_element(By.LINK_TEXT, "Signup / Login").click()
 
 
+    #remove cookie/consent overlay (NO try/except)
+    driver.execute_script(
+        """
+        const overlays = document.querySelectorAll('div.fc-dialog-overlay, div.fc-dialog-container');
+        overlays.forEach(o => {
+            if (o && o.parentNode) {
+                o.parentNode.removeChild(o);
+            }
+        });
+        """
+    )
+    #4. Click on 'Signup / Login' button
+    signup_link = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.LINK_TEXT, "Signup / Login"))
+    )
+    signup_link.click()
+
     # 5. Verify 'New User Signup!' is visible
     driver.find_element(By.CLASS_NAME, "sign-up-form")
 
@@ -56,6 +73,8 @@ def test_register_user_part_1(name,email):
 
     # 7. Click 'Signup' button
     driver.find_element(By.CSS_SELECTOR, "button[data-qa='signup-button']").click()
+
+    #close browser at the end.
     driver.quit()
 """
     # 8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
