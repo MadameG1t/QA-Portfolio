@@ -56,7 +56,9 @@ def test_register_user_part_1(name,email):
     signup_link.click()
 
     # 5. Verify 'New User Signup!' is visible
-    driver.find_element(By.CLASS_NAME, "sign-up-form")
+    WebDriverWait(driver, 10).until(
+        EC.visibility_of_element_located((By.XPATH, "//*[text()='New User Signup!']"))
+    )
 
     # 6. Enter name and mail address
     driver.find_element(By.CSS_SELECTOR,"input[data-qa='signup-name'] ").send_keys(name)
