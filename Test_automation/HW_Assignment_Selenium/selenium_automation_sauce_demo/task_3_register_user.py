@@ -1,3 +1,4 @@
+from lib2to3.fixes.fix_asserts import NAMES
 from select import select
 
 import pytest
@@ -134,34 +135,22 @@ def test_register_user_part_1(name,email):
     driver.find_element(By.ID, "zipcode").send_keys("10119")
     driver.find_element(By.ID, "mobile_number").send_keys("015167195071")
 
-
-    #close browser at the end.
-    driver.quit()
-"""
-
-    
-
-    
-
-    
-
     # 13. Click 'Create Account' button
     driver.find_element(By.CSS_SELECTOR, "button[data-qa='create-account']").click()
 
     # 14. Verify that 'ACCOUNT CREATED!' is visible
     wait.until(EC.visibility_of_element_located(
-        (By.XPATH, "//*[contains(text(),'ACCOUNT CREATED!') or contains(text(),'Account Created!')]")
+        (By.XPATH, "//*[contains(text(),'ACCOUNT CREATED!')")
     ))
 
     # 15. Click 'Continue' button
     driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
 
-    # Sometimes there can be a small delay/overlay – tiny pause helps
     time.sleep(2)
 
     # 16. Verify that 'Logged in as username' is visible
     wait.until(EC.visibility_of_element_located(
-        (By.XPATH, f"//a[contains(text(),'Logged in as {NAME}')]")
+        (By.XPATH, f"//a[contains(text(),'Logged in as {NAMES}')]")
     ))
 
     # 17. Click 'Delete Account' button
@@ -169,9 +158,12 @@ def test_register_user_part_1(name,email):
 
     # 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
     wait.until(EC.visibility_of_element_located(
-        (By.XPATH, "//*[contains(text(),'ACCOUNT DELETED!') or contains(text(),'Account Deleted!')]")
+        (By.XPATH, "//*[contains(text(),'ACCOUNT DELETED!')")
     ))
     driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
-"""
+
+    #close browser at the end.
+    driver.quit()
+
 
 
