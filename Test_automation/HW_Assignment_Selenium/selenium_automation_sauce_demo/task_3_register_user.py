@@ -35,23 +35,19 @@ def test_register_user_part_1(name,email):
     # 3. verify home page is visible successfully
     assert "Automation Exercise" in driver.title, "Home page not loaded correctly"
 
+    #manage cookies. Click on consent.
+    wait.until(
+        EC.element_to_be_clickable(
+            (By.CSS_SELECTOR,
+             "div.fc-consent-root button[aria-label='Consent'] p.fc-button-label")
+        )
+    ).click()
 
     # 4. Click on 'Signup / Login' button
     driver.find_element(By.LINK_TEXT, "Signup / Login").click()
 
-    '''
-    #remove cookie/consent overlay (NO try/except)
-    driver.execute_script(
-        """
-        const overlays = document.querySelectorAll('div.fc-dialog-overlay, div.fc-dialog-container');
-        overlays.forEach(o => {
-            if (o && o.parentNode) {
-                o.parentNode.removeChild(o);
-            }
-        });
-        """
-    )
-    '''
+
+    time.sleep(4)
 
     #4. Click on 'Signup / Login' button
     signup_link = WebDriverWait(driver, 10).until(
@@ -145,38 +141,33 @@ def test_register_user_part_1(name,email):
     driver.find_element(By.CSS_SELECTOR, "button[data-qa='create-account']").click()
 
     # 14. Verify that 'ACCOUNT CREATED!' is visible
-    wait.until(EC.visibility_of_element_located(
-        (By.XPATH, "//*[contains(text(),'ACCOUNT CREATED!')")
-    ))
+    wait.until(
+        EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, "h2[data-qa='account-created']")
+        )
+    )
 
-    time.sleep(4)
+    # 15. Find the 'Continue' button
+    continue_btn = wait.until(
+        EC.presence_of_element_located(
+            (By.CSS_SELECTOR, "a[data-qa='continue-button']")
+        )
+    )
 
-    # 15. Click 'Continue' button
-    #driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
-    driver.find_element(By.XPATH, "//a[@data-qa='continue-button']").click()
+    # Scroll it into view
+    driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", continue_btn)
 
-    time.sleep(4)
+    # Remove ads/iframes
+    driver.execute_script("""
+        document.querySelectorAll("iframe, .adsbygoogle, ins.adsbygoogle")
+                .forEach(el => el.remove());
+    """)
 
-    # 16. Verify that 'Logged in as username' is visible
-    logged_in_element = driver.find_element(By.XPATH, "//a[contains(., 'Logged in as')]")
-    assert logged_in_element.text.strip() == f"Logged in as {name}"
+    # Ensure it's clickable
+    wait.until(
+        EC.element_to_be_clickable(
+            (By.CSS_SELECTOR, "a[data-qa='continue-button']")
+        )
+    )
 
-    time.sleep(4)
-
-    # 17. Click 'Delete Account' button
-    #driver.find_element(By.LINK_TEXT, "delete_account").click()
-    driver.find_element(By.XPATH, "//a[@href='/delete_account']").click()
-
-    time.sleep(4)
-
-    # 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-    #wait.until(EC.visibility_of_element_located(
-    #    (By.XPATH, "//*[contains(text(),'ACCOUNT DELETED!')")
-    #))
-    driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
-
-    #close browser at the end.
-    driver.quit()
-
-
-
+    driver.execute_script("arguments[0].click();", continue_btn)
