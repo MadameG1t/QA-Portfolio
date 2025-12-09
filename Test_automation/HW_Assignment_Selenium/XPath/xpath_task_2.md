@@ -19,4 +19,7 @@ Email address = //input[@type='email' and contains(@placeholder, 'Email address'
 Password = //input[@type='password' and @placeholder='Password']
 Sing Up button = //button[contains(@class, 'submit-btn') and text()='Sign Up']
 
+# Go to https://grocerymate.masterschool.com/store, you will see the following UI:
+# Write the XPath of Confirm button which you can see in the Modal. 
+
 
