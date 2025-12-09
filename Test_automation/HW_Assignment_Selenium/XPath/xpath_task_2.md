@@ -22,5 +22,15 @@ Sing Up button = //button[contains(@class, 'submit-btn') and text()='Sign Up']
 # Go to https://grocerymate.masterschool.com/store, you will see the following UI:
 # Write the XPath of Confirm button which you can see in the Modal. 
 
-Confirm button inside modal = //div[contains(@class, 'modal-content')]//button[normalize-space()='Confirm')]
+Confirm button inside modal = //div[contains(@class, 'modal-content')]//button[normalize-space()='Confirm']
 
+# 1. Go to the **Shop** page, write the XPath for:
+#    1. Quantity input of Oranges
+ //input[contains(@class, 'quantity') and @type='number']
+
+#    2. Add to cart button for Oranges
+//div[contains(@class, 'col-7')]//button[normalize-space()='Add to Cart']
+
+#    3. Add to wish list for Oranges
+
+//div[contains(@class, 'col-1')]//button[contains(@class, 'btn btn-outline-dark')]
