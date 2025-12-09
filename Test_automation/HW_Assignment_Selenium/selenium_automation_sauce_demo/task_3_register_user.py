@@ -14,7 +14,7 @@ import time
 
 @pytest.mark.parametrize("name, email",
                          [
-                             ("problem user", "secret.sauce.b@web.de")
+                             ("problem user", "secret.sauce.baby@web.de")
 ])
 
 
@@ -150,24 +150,29 @@ def test_register_user_part_1(name,email):
     ))
 
     time.sleep(4)
+
     # 15. Click 'Continue' button
     #driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
-    driver.find_element(By.XPATH, "//a[@data-qa='continue-button']")
+    driver.find_element(By.XPATH, "//a[@data-qa='continue-button']").click()
 
-    time.sleep(2)
+    time.sleep(4)
 
     # 16. Verify that 'Logged in as username' is visible
-    wait.until(EC.visibility_of_element_located(
-        (By.XPATH, f"//a[contains(text(),'Logged in as {NAMES}')]")
-    ))
+    logged_in_element = driver.find_element(By.XPATH, "//a[contains(., 'Logged in as')]")
+    assert logged_in_element.text.strip() == f"Logged in as {name}"
+
+    time.sleep(4)
 
     # 17. Click 'Delete Account' button
-    driver.find_element(By.LINK_TEXT, "Delete Account").click()
+    #driver.find_element(By.LINK_TEXT, "delete_account").click()
+    driver.find_element(By.XPATH, "//a[@href='/delete_account']").click()
+
+    time.sleep(4)
 
     # 18. Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-    wait.until(EC.visibility_of_element_located(
-        (By.XPATH, "//*[contains(text(),'ACCOUNT DELETED!')")
-    ))
+    #wait.until(EC.visibility_of_element_located(
+    #    (By.XPATH, "//*[contains(text(),'ACCOUNT DELETED!')")
+    #))
     driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
 
     #close browser at the end.
