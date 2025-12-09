@@ -26,6 +26,7 @@
 
 ## 7. What is the XPath to select the **email input field** in the contact form?
 
+//section[@id='contact']//input[@id='email']
 
 ## 8. How would you write an XPath to select the **entire contact form**?
 ## 9. Provide the XPath to select the **footer paragraph element**.
