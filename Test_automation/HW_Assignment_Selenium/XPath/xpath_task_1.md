@@ -33,7 +33,12 @@
 //form[@id='contactForm']
 
 ## 9. Provide the XPath to select the **footer paragraph element**.
+
+//footer/p
+
 ## 10. What is the XPath to select the **first team member**'s (`<h4>`) name?
+
+
 ## 11. How can you select the description of the **second service** item using XPath?
 ## 12. What is the XPath to select the "Contact Us" section header (`<h2>` element)?
 ## 13. Write an XPath expression to select all links within the dropdown under the "Services" navigation item.
