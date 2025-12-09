@@ -38,8 +38,11 @@
 
 ## 10. What is the XPath to select the **first team member**'s (`<h4>`) name?
 
+//h4[text()='John Doe']
 
 ## 11. How can you select the description of the **second service** item using XPath?
+
+
 ## 12. What is the XPath to select the "Contact Us" section header (`<h2>` element)?
 ## 13. Write an XPath expression to select all links within the dropdown under the "Services" navigation item.
 ## 14. What is the XPath to select the first `<li>` under the "Our Team" section?
