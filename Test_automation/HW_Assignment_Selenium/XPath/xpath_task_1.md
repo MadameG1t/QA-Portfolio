@@ -42,8 +42,11 @@
 
 ## 11. How can you select the description of the **second service** item using XPath?
 
+//div[@class='service-item'][.//h3[text()='Graphic Design']]//p
 
 ## 12. What is the XPath to select the "Contact Us" section header (`<h2>` element)?
+
+
 ## 13. Write an XPath expression to select all links within the dropdown under the "Services" navigation item.
 ## 14. What is the XPath to select the first `<li>` under the "Our Team" section?
 ## 15. Provide the XPath to locate the "Send Message" button in the contact form.
