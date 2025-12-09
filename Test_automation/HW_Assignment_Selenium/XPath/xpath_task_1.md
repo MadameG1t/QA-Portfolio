@@ -50,11 +50,12 @@
 
 ## 13. Write an XPath expression to select all links within the dropdown under the "Services" navigation item.
 
-//
+//ul[@class='dropdown']//a
 
 ## 14. What is the XPath to select the first `<li>` under the "Our Team" section?
 
-//
+//div[@class='team']//ul/li[1]
+
 
 ## 15. Provide the XPath to locate the "Send Message" button in the contact form.
 
