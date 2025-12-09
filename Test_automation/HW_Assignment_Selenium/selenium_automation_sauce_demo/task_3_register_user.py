@@ -163,7 +163,7 @@ def test_register_user_part_1(name,email):
                 .forEach(el => el.remove());
     """)
 
-    # Ensure it's clickable
+    # make sure the button it's clickable
     wait.until(
         EC.element_to_be_clickable(
             (By.CSS_SELECTOR, "a[data-qa='continue-button']")
