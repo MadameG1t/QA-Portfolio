@@ -13,14 +13,20 @@
 
 ## 4. Write the XPath to select the team member’s name **Jane Smith**.
 
-//h4[@id='Jane Smith']
+//h4[text()='Jane Smith']
 
 ## 5. Write the XPath to select the description (which is inside the paragraph) of **SEO Services**.
 
-
+//div[@class='service-item'][.//h3[text()='SEO Services']]//p
 
 ## 6. Write an XPath expression to select all service items in the "**Our Services**" section.
+
+//section[@id='services']//div[@class='service-item']
+
+
 ## 7. What is the XPath to select the **email input field** in the contact form?
+
+
 ## 8. How would you write an XPath to select the **entire contact form**?
 ## 9. Provide the XPath to select the **footer paragraph element**.
 ## 10. What is the XPath to select the **first team member**'s (`<h4>`) name?
