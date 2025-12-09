@@ -19,3 +19,4 @@ Email address = //input[@type='email' and contains(@placeholder, 'Email address'
 Password = //input[@type='password' and @placeholder='Password']
 Sing Up button = //button[contains(@class, 'submit-btn') and text()='Sign Up']
 
+
