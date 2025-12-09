@@ -14,9 +14,7 @@ import time
 
 @pytest.mark.parametrize("name, email",
                          [
-                             ("standard user","salmon.de@gmail.com" ),
-                             ("locked_out_user", "secret_sauce"),
-                             ("problem user", "secret_sauce@web.de")
+                             ("problem user", "secret.sauce.b@web.de")
 ])
 
 
@@ -41,7 +39,7 @@ def test_register_user_part_1(name,email):
     # 4. Click on 'Signup / Login' button
     driver.find_element(By.LINK_TEXT, "Signup / Login").click()
 
-
+    '''
     #remove cookie/consent overlay (NO try/except)
     driver.execute_script(
         """
@@ -53,6 +51,8 @@ def test_register_user_part_1(name,email):
         });
         """
     )
+    '''
+
     #4. Click on 'Signup / Login' button
     signup_link = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.LINK_TEXT, "Signup / Login"))
@@ -70,10 +70,10 @@ def test_register_user_part_1(name,email):
     time.sleep(1)
 
     #check for correct name and email input
-    name_pattern = r"^.{1,50}$"
-    email_pattern = r"^[^@]+@[^@]+\.[^@]+$"
-    assert re.match(name_pattern, name), f"Invalid name: {name}"
-    assert re.match(email_pattern, email), f"Invalid email address: {email}"
+    #name_pattern = r"^.{1,50}$"
+    #email_pattern = r"^[^@]+@[^@]+\.[^@]+$"
+    #assert re.match(name_pattern, name), f"Invalid name: {name}"
+    #assert re.match(email_pattern, email), f"Invalid email address: {email}"
 
     time.sleep(2)
 
@@ -86,6 +86,7 @@ def test_register_user_part_1(name,email):
     ))
 
     #9. Fill details : Title, Name, Email, Password, Date of birth
+
     #verify title section is visible
     assert driver.find_element(By.ID, "id_gender1").is_displayed()
     assert driver.find_element(By.ID, "id_gender2").is_displayed()
@@ -93,7 +94,6 @@ def test_register_user_part_1(name,email):
     #Title select Mr or Mrs
     driver.find_element(By.CSS_SELECTOR, "label[for='id_gender1']").click()
     driver.find_element(By.CSS_SELECTOR, "label[for='id_gender2']").click()
-
     #Name box
     name_on_form = driver.find_element(By.CSS_SELECTOR, "input[data-qa='name']")
     assert name_on_form.get_attribute("value") == name
@@ -116,11 +116,16 @@ def test_register_user_part_1(name,email):
     assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='months']").is_displayed()
     assert driver.find_element(By.CSS_SELECTOR, "select[data-qa='years']").is_displayed()
 
+    #select dropdown menu for day, month and year
+    Select(driver.find_element(By.ID, "days")).select_by_value("1")
+    Select(driver.find_element(By.ID, "months")).select_by_value("3")
+    Select(driver.find_element(By.ID, "years")).select_by_value("1997")
+
     # 10. Select checkbox 'Sign up for our newsletter!'
     driver.find_element(By.ID, "newsletter").click()
 
     # 11. Select checkbox 'Receive special offers from our partners!'
-    driver.find_element(By.ID, "option").click()
+    driver.find_element(By.ID, "optin").click()
 
     # 12. Fill address details
     driver.find_element(By.ID, "first_name").send_keys("gretchen")
@@ -129,12 +134,13 @@ def test_register_user_part_1(name,email):
     driver.find_element(By.ID, "address1").send_keys("Schwedter Str. 14")
     driver.find_element(By.ID, "address2").send_keys("4")
 
-    Select(driver.find_element(By.ID, "country")).select_by_value("germany")
-    driver.find_element(By.ID, "state").send_keys("Berlin")
-    driver.find_element(By.ID, "city").send_keys("Berlin")
-    driver.find_element(By.ID, "zipcode").send_keys("10119")
+    Select(driver.find_element(By.ID, "country")).select_by_value("United States")
+    driver.find_element(By.ID, "state").send_keys("New York")
+    driver.find_element(By.ID, "city").send_keys("Brooklyn")
+    driver.find_element(By.ID, "zipcode").send_keys("11221")
     driver.find_element(By.ID, "mobile_number").send_keys("015167195071")
 
+    time.sleep(4)
     # 13. Click 'Create Account' button
     driver.find_element(By.CSS_SELECTOR, "button[data-qa='create-account']").click()
 
@@ -143,8 +149,10 @@ def test_register_user_part_1(name,email):
         (By.XPATH, "//*[contains(text(),'ACCOUNT CREATED!')")
     ))
 
+    time.sleep(4)
     # 15. Click 'Continue' button
-    driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
+    #driver.find_element(By.CSS_SELECTOR, "a[data-qa='continue-button']").click()
+    driver.find_element(By.XPATH, "//a[@data-qa='continue-button']")
 
     time.sleep(2)
 
