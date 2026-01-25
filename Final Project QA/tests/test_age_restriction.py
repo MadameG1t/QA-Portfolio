@@ -47,7 +47,6 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
 
 
     elif expected == "required":
-
         err = page.get_error_text()
         if err:
             assert True
