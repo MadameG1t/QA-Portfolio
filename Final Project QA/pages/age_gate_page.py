@@ -12,7 +12,7 @@ class AgeGatePage:
 
     UNDERAGE_MESSAGE = (
         By.XPATH,
-        "//*[contains(normalize-space(), 'You are underage')]"
+        "//*[normalize-space()='You are underage. You can still browse the site, but you will not be able to view alcohol products.']"
     )
 
     ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-red-500")
