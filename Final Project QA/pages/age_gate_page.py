@@ -51,11 +51,7 @@ class AgeGatePage:
             return False
 
     def underage_message_visible(self) -> bool:
-        try:
-            self.wait.until(EC.visibility_of_element_located(self.UNDERAGE_MESSAGE))
-            return True
-        except TimeoutException:
-            return False
+        return self.get_underage_message_text() != ""
 
     def get_underage_message_text(self) -> str:
         try:
