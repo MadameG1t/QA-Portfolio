@@ -16,5 +16,4 @@ def date_of_birth_entry_format(d:date,fmt: str = "DD-MM-YYYY"):
         return d.strftime("%Y-%m-%d")
     if fmt == "MM/DD/YYYY":
         return d.strftime("%m/%d/%Y")
-
     return d.strftime("%d-%m-%Y")
