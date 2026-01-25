@@ -17,6 +17,9 @@ class AgeGatePage:
     def open(self, url: str):
         self.driver.get(url)
 
+    def go_to_store(self):
+        self.wait.until(EC.element_to_be_clickable(self.SHOP_LINK)).click()
+
     def enter_dob(self, dob_str: str):
         field = self.wait.until(EC.element_to_be_clickable(self.DOB_INPUT))
         field.click()
