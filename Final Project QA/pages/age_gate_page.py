@@ -8,7 +8,7 @@ class AgeGatePage:
     DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder='DD-MM-YYYY']")
     SUBMIT_BTN = (By.XPATH, "//button[normalize-space()='Confirm']")
 
-    def __initiate__(self, driver, timeout=10):
+    def __init__(self, driver, timeout=10):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
