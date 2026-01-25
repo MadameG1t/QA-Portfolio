@@ -9,6 +9,8 @@ class AgeGatePage:
     DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder='DD-MM-YYYY']")
     SUBMIT_BTN = (By.XPATH, "//button[normalize-space()='Confirm']")
     SHOP_LINK = (By.CSS_SELECTOR, "a[href='/store']")
+    UNDERAGE_MESSAGE = (
+    By.XPATH, "//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'underage')]")
 
     def __init__(self, driver, timeout=10):
         self.driver = driver
@@ -43,4 +45,12 @@ class AgeGatePage:
             return True
         except TimeoutException:
             return False
+
+    def underage_message_visible(self) -> bool:
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.UNDERAGE_MESSAGE))
+            return True
+        except Exception:
+            return False
+
 

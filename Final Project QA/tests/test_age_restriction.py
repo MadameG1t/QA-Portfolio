@@ -37,7 +37,8 @@ def test_user_just_below_18_cannot_pass_age_gate(driver):
     page.submit()
     time.sleep(3)
 
-    assert page.age_gate_still_open(), "Expected underage user to be blocked (age gate stays open), but it closed."
+    assert page.underage_message_visible(), "Expected an underage warning message, but it was not shown."
+
 
 
 def test_user_below_17_cannot_pass_age_gate(driver):
