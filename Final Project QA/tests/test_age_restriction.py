@@ -7,13 +7,12 @@ from utils.constants import Urls, AgeRules
 from utils.helpers import date_of_birth_for_age_years, date_of_birth_entry_format, add_days
 
 AGE_CASES = [
-    ("exactly_18", 0, True),
-    ("just_under_18", 1, False),
-    ("below_17", 400, None, True),
-    ("above_18", -1, None, False),
-    ("empty_dob", None, "", "required"),
-    ("invalid_dob", None, "13/25/2008", "invalid"),
-
+    ("exactly_18",     0,    None, "allowed"),
+    ("just_under_18",  1,    None, "underage"),
+    ("below_17",       400,  None, "underage"),
+    ("above_18",       -1,   None, "allowed"),
+    ("empty_dob",      None, "",   "required"),
+    ("invalid_dob",    None, "13/25/2008", "invalid"),
 ]
 
 @pytest.mark.parametrize("case_name, offset_days, custom_dob, expected",
