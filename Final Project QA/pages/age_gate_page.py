@@ -5,35 +5,42 @@ from selenium.common.exceptions import TimeoutException
 
 
 class AgeGatePage:
-
+    # Locators
     DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder='DD-MM-YYYY']")
     SUBMIT_BTN = (By.XPATH, "//button[normalize-space()='Confirm']")
     SHOP_LINK = (By.CSS_SELECTOR, "a[href='/store']")
+
+    # Detects underage warnings by either keyword "underage" or "alcohol"
     UNDERAGE_MESSAGE = (
-    By.XPATH, "//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'underage')]")
+        By.XPATH,
+        "//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'underage') "
+        "or contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'alcohol')]"
+    )
+
+    # Generic error message container candidates (flexible)
     ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-red-500")
 
-
-    def __init__(self, driver, timeout=10):
+    def __init__(self, driver, timeout: int = 10):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
-    def open(self, url: str):
+    # Actions
+    def open(self, url: str) -> None:
         self.driver.get(url)
 
-    def go_to_store(self):
+    def go_to_store(self) -> None:
         self.wait.until(EC.element_to_be_clickable(self.SHOP_LINK)).click()
 
-    def enter_dob(self, dob_str: str):
+    def enter_dob(self, dob_str: str) -> None:
         field = self.wait.until(EC.element_to_be_clickable(self.DOB_INPUT))
         field.click()
         field.clear()
         field.send_keys(dob_str)
 
-    def submit(self):
-        btn = self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BTN))
-        btn.click()
+    def submit(self) -> None:
+        self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BTN)).click()
 
+    # State checks / messages
     def age_gate_closed(self) -> bool:
         try:
             self.wait.until(EC.invisibility_of_element_located(self.DOB_INPUT))
@@ -41,7 +48,7 @@ class AgeGatePage:
         except TimeoutException:
             return False
 
-    def age_gate_still_open(self):
+    def age_gate_still_open(self) -> bool:
         try:
             self.wait.until(EC.visibility_of_element_located(self.DOB_INPUT))
             return True
@@ -52,15 +59,19 @@ class AgeGatePage:
         try:
             self.wait.until(EC.visibility_of_element_located(self.UNDERAGE_MESSAGE))
             return True
-        except Exception:
+        except TimeoutException:
             return False
+
+    def get_underage_message_text(self) -> str:
+        try:
+            el = self.wait.until(EC.visibility_of_element_located(self.UNDERAGE_MESSAGE))
+            return el.text.strip()
+        except TimeoutException:
+            return ""
 
     def get_error_text(self) -> str:
         try:
             el = self.wait.until(EC.visibility_of_element_located(self.ERROR_TEXT))
             return el.text.strip()
-        except Exception:
+        except TimeoutException:
             return ""
-
-
-
