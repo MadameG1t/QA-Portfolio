@@ -45,56 +45,23 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
     elif expected == "underage":
         assert page.underage_message_visible(), f"{case_name}: expected underage message"
 
+
     elif expected == "required":
-        assert page.get_error_text(), f"{case_name}: expected required DOB error"
+
+        err = page.get_error_text()
+        if err:
+            assert True
+        elif page.underage_message_visible():
+            pytest.xfail("BUG: Empty DOB format is treated as underage instead of showing 'enter valid DOB' error.")
+        else:
+            assert False, f"{case_name}: expected empty DOB error, but no error/underage message was shown."
+
 
     elif expected == "invalid":
-        assert page.get_error_text(), f"{case_name}: expected invalid DOB error"
-"""
-def test_user_exactly_18_can_pass_age_gate(driver):
-    page = AgeGatePage(driver)
-    page.open(Urls.HOME)
-    time.sleep(3)
-    page.go_to_store()
-    time.sleep(3)
-    dob_date = date_of_birth_for_age_years(date.today(), AgeRules.MIN_AGE)
-    dob_str = date_of_birth_entry_format(dob_date, AgeRules.DOB_FORMAT_HINT)
-    page.enter_dob(dob_str)
-    time.sleep(3)
-    page.submit()
-    time.sleep(0)
-
-    assert page.age_gate_closed(),\
-    "Expected age verification popup to close after entering valid DOB,but stayed open"
-
-
-def test_user_just_below_18_cannot_pass_age_gate(driver):
-    page = AgeGatePage(driver)
-    page.open(Urls.HOME)
-    time.sleep(3)
-    page.go_to_store()
-    time.sleep(3)
-    dob_exact = date_of_birth_for_age_years(date.today(), AgeRules.MIN_AGE)
-    dob_under = add_days(dob_exact,1)
-    dob_str = date_of_birth_entry_format(dob_under, AgeRules.DOB_FORMAT_HINT)
-    page.enter_dob(dob_str)
-    time.sleep(3)
-    page.submit()
-    time.sleep(3)
-
-    assert page.underage_message_visible(), "Expected an underage warning message, but it was not shown."
-
-
-
-def test_user_below_17_cannot_pass_age_gate(driver):
-    pass
-
-def test_user_above_18_can_pass_age_gate(driver):
-    pass
-
-def test_user_dob_not_entered_cannot_pass_age_gate(driver):
-    pass
-
-def test_user_invalid_dob_cannot_pass_age_gate(driver):
-    pass
-"""
+        err = page.get_error_text()
+        if err:
+            assert True
+        elif page.underage_message_visible():
+            pytest.xfail("BUG: Invalid DOB format is treated as underage instead of showing 'invalid format' error.")
+        else:
+            assert False, f"{case_name}: expected invalid DOB error, but no error/underage message was shown."

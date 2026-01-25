@@ -11,6 +11,8 @@ class AgeGatePage:
     SHOP_LINK = (By.CSS_SELECTOR, "a[href='/store']")
     UNDERAGE_MESSAGE = (
     By.XPATH, "//*[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz'), 'underage')]")
+    ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-red-500")
+
 
     def __init__(self, driver, timeout=10):
         self.driver = driver
@@ -52,5 +54,13 @@ class AgeGatePage:
             return True
         except Exception:
             return False
+
+    def get_error_text(self) -> str:
+        try:
+            el = self.wait.until(EC.visibility_of_element_located(self.ERROR_TEXT))
+            return el.text.strip()
+        except Exception:
+            return ""
+
 
 
