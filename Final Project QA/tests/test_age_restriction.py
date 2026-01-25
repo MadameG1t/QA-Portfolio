@@ -51,9 +51,9 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
         if err:
             assert True
         elif page.underage_message_visible():
-            pytest.xfail("BUG: Empty DOB format is treated as underage instead of showing 'enter valid DOB' error.")
+            pytest.xfail("BUG: Empty DOB format is treated as underage instead of showing 'DOB is required'.")
         else:
-            assert False, f"{case_name}: expected empty DOB error, but no error/underage message was shown."
+            assert False, f"{case_name}: expected required DOB error, but no error/underage message was shown."
 
 
     elif expected == "invalid":
