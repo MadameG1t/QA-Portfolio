@@ -1,4 +1,5 @@
 from datetime import date
+from datetime import timedelta
 
 
 def date_of_birth_for_age_years(today: date,years: int):
@@ -17,3 +18,6 @@ def date_of_birth_entry_format(d:date,fmt: str = "DD-MM-YYYY"):
     if fmt == "MM/DD/YYYY":
         return d.strftime("%m/%d/%Y")
     return d.strftime("%d-%m-%Y")
+
+def add_days(d: date, days: int) -> date:
+    return d + timedelta(days=days)

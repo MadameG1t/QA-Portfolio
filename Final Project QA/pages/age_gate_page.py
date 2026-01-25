@@ -37,3 +37,10 @@ class AgeGatePage:
         except TimeoutException:
             return False
 
+    def age_gate_still_open(self):
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.DOB_INPUT))
+            return True
+        except TimeoutException:
+            return False
+
