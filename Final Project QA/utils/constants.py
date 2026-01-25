@@ -3,6 +3,7 @@
 class Urls:
     BASE = "https://grocerymate.masterschool.com"
     HOME = f"{BASE}/"
+    SHOP = f"{BASE}/shop"
 
 
 class AgeRules:
