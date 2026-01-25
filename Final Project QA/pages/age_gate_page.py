@@ -6,23 +6,23 @@ from selenium.webdriver.support import expected_conditions as EC
 class AgeGatePage:
 
     DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder='DD-MM-YYYY']")
-    SUBMIT_BTN = (By.XPATH, "//button[normalize-space()='confirm']")
+    SUBMIT_BTN = (By.XPATH, "//button[normalize-space()='Confirm']")
 
-def __init__(self, driver, timeout=10):
-    self.driver = driver
-    self.wait = WebDriverWait(driver, timeout)
+    def __init__(self, driver, timeout=10):
+        self.driver = driver
+        self.wait = WebDriverWait(driver, timeout)
 
-def open(self, url: str):
-    self.driver.get(url)
+    def open(self, url: str):
+        self.driver.get(url)
 
+    def enter_dob(self, dob_str: str):
+        field = self.wait.until(EC.element_to_be_clickable(self.DOB_INPUT))
+        field.click()
+        field.clear()
+        field.send_keys(dob_str)
 
-def enter_dob(self, dob_str: str):
-    field = self.wait.until(EC.element_to_be_clickable(self.DOB_INPUT))
-    field.click()
-    field.clear()
-    field.send_keys(dob_str)
+    def submit(self):
+        btn = self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BTN))
+        btn.click()
 
-def submit(self):
-    btn = self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BTN))
-    btn.click()
 
