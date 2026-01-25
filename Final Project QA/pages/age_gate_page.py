@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 
 class AgeGatePage:
@@ -25,4 +26,10 @@ class AgeGatePage:
         btn = self.wait.until(EC.element_to_be_clickable(self.SUBMIT_BTN))
         btn.click()
 
+    def age_gate_closed(self) -> bool:
+        try:
+            self.wait.until(EC.invisibility_of_element_located(self.DOB_INPUT))
+            return True
+        except TimeoutException:
+            return False
 
