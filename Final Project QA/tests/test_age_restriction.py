@@ -13,7 +13,8 @@ def test_user_exactly_18_can_pass_age_gate(driver):
     page.enter_dob(dob_str)
     page.submit()
 
-    assert page.driver.current_url != Urls.HOME
+    assert page.age_gate_closed(),\
+    "Expected age verification popup to close after entering valid DOB,but stayed open"
 
 
 def test_user_just_below_18_cannot_pass_age_gate(driver):
