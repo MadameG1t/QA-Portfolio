@@ -38,8 +38,11 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
 
     page.submit()
     time.sleep(3)
-    print("Underage msg:", page.get_underage_message_text())
-    print("Error msg:", page.get_error_text())
+    underage_text = page.get_underage_message_text()
+    error_text = page.get_error_text()
+
+    print("Underage msg:", underage_text)
+    print("Error msg:", error_text)
     print("underage_message_visible():", page.underage_message_visible())
 
     if expected == "allowed":
@@ -48,25 +51,18 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
     elif expected == "underage":
         assert page.underage_message_visible(), f"{case_name}: expected underage message"
 
-
-
     elif expected == "required":
-        err = page.get_error_text()
-        if err:
+        if error_text:
             assert True
-        elif page.get_underage_message_text():
+        elif underage_text:
             pytest.xfail("BUG: Empty DOB is treated as underage instead of showing 'DOB is required'.")
         else:
             assert False, f"{case_name}: expected required DOB error, but no error/underage message was shown."
 
-
-
-
     elif expected == "invalid":
-        err = page.get_error_text()
-        if err:
+        if error_text:
             assert True
-        elif page.get_underage_message_text():
+        elif underage_text:
             pytest.xfail("BUG: Invalid DOB format is treated as underage instead of showing 'invalid format' error.")
         else:
             assert False, f"{case_name}: expected invalid DOB error, but no error/underage message was shown."
