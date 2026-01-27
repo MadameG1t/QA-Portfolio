@@ -45,10 +45,6 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
     underage_text = page.get_underage_message_text()
     error_text = page.get_error_text()
 
-    print("Underage msg:", underage_text)
-    print("Error msg:", error_text)
-    print("underage_message_visible():", page.underage_message_visible())
-
     if expected == "allowed":
         assert not underage_text, f"{case_name}: expected allowed but underage message shown"
     elif expected == "underage":
