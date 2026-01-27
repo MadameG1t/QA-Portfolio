@@ -9,3 +9,5 @@ class Urls:
 class AgeRules:
     MIN_AGE = 18
     DOB_FORMAT_HINT = "DD-MM-YYYY"
+
+DEBUG_SLEEP = 0

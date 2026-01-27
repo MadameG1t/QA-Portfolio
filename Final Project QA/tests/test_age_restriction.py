@@ -3,7 +3,7 @@ import time
 import pytest
 
 from pages.age_gate_page import AgeGatePage
-from utils.constants import Urls, AgeRules
+from utils.constants import Urls, AgeRules, DEBUG_SLEEP
 from utils.helpers import date_of_birth_for_age_years, date_of_birth_entry_format, add_days
 
 AGE_CASES = [
@@ -22,9 +22,11 @@ AGE_CASES = [
 def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
     page = AgeGatePage(driver)
     page.open(Urls.HOME)
-    time.sleep(3)
+    time.sleep(DEBUG_SLEEP)
+
     page.go_to_store()
-    time.sleep(3)
+    time.sleep(DEBUG_SLEEP)
+
 
     if offset_days is not None:
         dob_exact = date_of_birth_for_age_years(date.today(), AgeRules.MIN_AGE)
@@ -37,7 +39,8 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
         page.enter_dob(dob_str)
 
     page.submit()
-    time.sleep(3)
+    time.sleep(DEBUG_SLEEP)
+
     underage_text = page.get_underage_message_text()
     error_text = page.get_error_text()
 
