@@ -50,10 +50,9 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
 
     if expected == "allowed":
         assert not underage_text, f"{case_name}: expected allowed but underage message shown"
-
     elif expected == "underage":
-
         assert underage_text, f"{case_name}: expected underage message"
+
 
     elif expected == "required":
         if error_text:
