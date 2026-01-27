@@ -64,3 +64,11 @@ class AgeGatePage:
             return el.text.strip()
         except TimeoutException:
             return ""
+
+    def wait_for_age_gate(self) -> bool:
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.DOB_INPUT))
+            return True
+        except TimeoutException:
+            return False
+
