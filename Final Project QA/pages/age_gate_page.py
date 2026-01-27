@@ -5,16 +5,14 @@ from selenium.common.exceptions import TimeoutException
 
 
 class AgeGatePage:
-    # Locators
+
     DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder='DD-MM-YYYY']")
     SUBMIT_BTN = (By.XPATH, "//button[normalize-space()='Confirm']")
     SHOP_LINK = (By.CSS_SELECTOR, "a[href='/store']")
-
     UNDERAGE_MESSAGE = (
         By.XPATH,
         "//*[normalize-space()='You are underage. You can still browse the site, but you will not be able to view alcohol products.']"
     )
-
     ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-red-500")
 
     def __init__(self, driver, timeout: int = 10):
