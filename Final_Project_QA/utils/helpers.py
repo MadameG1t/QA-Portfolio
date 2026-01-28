@@ -1,5 +1,6 @@
 from datetime import date
 from datetime import timedelta
+import time
 
 
 def date_of_birth_for_age_years(today: date,years: int):
@@ -21,3 +22,6 @@ def date_of_birth_entry_format(d:date,fmt: str = "DD-MM-YYYY"):
 
 def add_days(d: date, days: int) -> date:
     return d + timedelta(days=days)
+
+def unique_email(prefix="qa"):
+    return f"{prefix}_{int(time.time())}@example.com"
