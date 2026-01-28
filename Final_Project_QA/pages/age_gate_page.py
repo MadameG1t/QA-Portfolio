@@ -3,6 +3,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+from datetime import date
+
+from utils.constants import AgeRules
+from utils.helpers import date_of_birth_for_age_years, date_of_birth_entry_format
 
 class AgeGatePage:
 
@@ -72,3 +76,18 @@ class AgeGatePage:
         except TimeoutException:
             return False
 
+    def pass_age_gate_if_present(self) -> None:
+
+        if not self.wait_for_age_gate():
+            return
+
+        dob = date_of_birth_for_age_years(date.today(), AgeRules.MIN_AGE)
+        dob_str = date_of_birth_entry_format(dob, AgeRules.DOB_FORMAT_HINT)
+
+        self.enter_dob(dob_str)
+        self.submit()
+
+        # If it didn't close, surface any visible error (helps debugging)
+        if not self.age_gate_closed():
+            err = self.get_error_text()
+            raise AssertionError(f"Age gate did not close. Error: {err}")

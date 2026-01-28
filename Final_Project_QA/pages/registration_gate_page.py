@@ -1,10 +1,15 @@
+from datetime import date
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-from utils.constants import Urls
+from utils.constants import Urls, AgeRules
+from utils.helpers import date_of_birth_for_age_years, date_of_birth_entry_format
+from pages.age_gate_page import AgeGatePage
+
 
 
 class RegistrationGatePage:
@@ -26,12 +31,18 @@ class RegistrationGatePage:
     AUTH_MODAL = (By.CSS_SELECTOR, ".auth-modal, .modal-content")
     ERROR_TEXT = (By.CSS_SELECTOR, ".error, .alert-danger")
 
+    # IMPORTANT: do NOT include ".modal-content" here (too broad)
+    AGE_MODAL = (By.CSS_SELECTOR, ".ageVerification, .age-gate")
+    AGE_DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder*='DD'], input[placeholder*='YYYY'], input[type='text']")
+    AGE_CONFIRM_BTN = (By.XPATH, "//button[normalize-space()='Enter' or normalize-space()='Confirm' or normalize-space()='Yes']")
+
     def __init__(self, driver: WebDriver, timeout: int = 10):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
     def open(self) -> None:
         self.driver.get(Urls.STORE)
+        AgeGatePage(self.driver).pass_age_gate_if_present()
 
     def open_auth_modal(self) -> None:
         icon = self.wait.until(EC.element_to_be_clickable(self.ACCOUNT_ICON))
@@ -66,7 +77,6 @@ class RegistrationGatePage:
             return False
 
     def get_error_text(self) -> str:
-
         try:
             return self.wait.until(EC.visibility_of_element_located(self.ERROR_TEXT)).text
         except TimeoutException:
@@ -77,3 +87,22 @@ class RegistrationGatePage:
             return self.driver.find_element(*self.SIGN_UP_BTN).is_displayed()
         except Exception:
             return False
+
+    def pass_age_gate_if_present(self) -> None:
+        try:
+            quick_wait = WebDriverWait(self.driver, 3)
+            quick_wait.until(EC.visibility_of_element_located(self.AGE_MODAL))
+
+            dob = date_of_birth_for_age_years(date.today(), AgeRules.MIN_AGE)
+            dob_str = date_of_birth_entry_format(dob, AgeRules.DOB_FORMAT_HINT)
+
+            dob_el = quick_wait.until(EC.visibility_of_element_located(self.AGE_DOB_INPUT))
+            dob_el.clear()
+            dob_el.send_keys(dob_str)
+
+            quick_wait.until(EC.element_to_be_clickable(self.AGE_CONFIRM_BTN)).click()
+
+            self.wait.until(EC.invisibility_of_element_located(self.AGE_MODAL))
+
+        except TimeoutException:
+            return
