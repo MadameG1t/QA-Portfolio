@@ -17,4 +17,7 @@ class StorePage:
         first_card = cards[0]
 
         add_btn = first_card.find_element(*self.ADD_TO_CART_IN_CARD)
-        self.wait.until(EC.element_to_be_clickable(add_btn)).click()
+
+        self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", add_btn)
+        self.driver.execute_script("arguments[0].click();", add_btn)
+

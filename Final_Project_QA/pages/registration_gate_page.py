@@ -45,13 +45,14 @@ class RegistrationGatePage:
         self.driver.get(Urls.STORE)
         AgeGatePage(self.driver).pass_age_gate_if_present()
 
-    def open_auth_modal(self) -> None:
-        icon = self.wait.until(EC.element_to_be_clickable(self.ACCOUNT_ICON))
-        self.driver.execute_script("arguments[0].click();", icon)
-        self.wait.until(EC.visibility_of_element_located(self.AUTH_MODAL))
+    def open_registration_via_add_to_cart(self) -> None:
+
+        StorePage(self.driver).add_first_product_to_cart()
+        self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK)).click()
+        self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
 
     def go_to_registration_form(self) -> None:
-        self.open_auth_modal()
+        self.open_registration_via_add_to_cart()
         self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK)).click()
         self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
 

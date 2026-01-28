@@ -1,13 +1,13 @@
 from pages.registration_gate_page import RegistrationGatePage
 from utils.helpers import unique_email
-from utils.constants import Urls, TestUsers
+from utils.constants import TestUsers
 
 
 def test_user_can_register_successfully(driver):
     page = RegistrationGatePage(driver)
 
     page.open()
-    page.go_to_registration_form()
+    page.open_registration_via_add_to_cart()
 
     email = unique_email("grocerymate")
     password = TestUsers.DEFAULT_PASSWORD
