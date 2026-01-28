@@ -9,7 +9,7 @@ def test_user_can_register_successfully(driver):
     page = RegistrationGatePage(driver)
 
     page.open()
-    page.switch_to_registration()
+    page.go_to_registration_form()
 
     email = unique_email("grocerymate")
     password = TestUsers.DEFAULT_PASSWORD
