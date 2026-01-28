@@ -27,12 +27,12 @@ class RegistrationGatePage:
     FULL_NAME_INPUT = (By.XPATH, "//input[@placeholder='Full Name']")
     EMAIL_INPUT = (By.XPATH, "//input[@placeholder='Email address']")
     PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='Password']")
-    SIGN_UP_BTN = (By.CSS_SELECTOR, "button.submit-btn")
+    SIGN_UP_BTN = (By.XPATH, "//button[contains(@class,'submit-btn') and normalize-space()='Sign Up']")
+
 
     AUTH_MODAL = (By.CSS_SELECTOR, ".auth-modal, .modal-content")
     ERROR_TEXT = (By.CSS_SELECTOR, ".error, .alert-danger")
 
-    # IMPORTANT: do NOT include ".modal-content" here (too broad)
     AGE_MODAL = (By.CSS_SELECTOR, ".ageVerification, .age-gate")
     AGE_DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder*='DD'], input[placeholder*='YYYY'], input[type='text']")
     AGE_CONFIRM_BTN = (By.XPATH, "//button[normalize-space()='Enter' or normalize-space()='Confirm' or normalize-space()='Yes']")
@@ -48,12 +48,27 @@ class RegistrationGatePage:
     def open_registration_via_add_to_cart(self) -> None:
 
         StorePage(self.driver).add_first_product_to_cart()
+        self.wait.until(EC.visibility_of_element_located(self.EMAIL_INPUT))
         self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK)).click()
         self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
 
     def go_to_registration_form(self) -> None:
         self.open_registration_via_add_to_cart()
         self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK)).click()
+        self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
+
+    def ensure_signup_form(self) -> None:
+
+        try:
+            WebDriverWait(self.driver, 2).until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
+            return
+        except TimeoutException:
+            pass
+
+        link = self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK))
+        self.driver.execute_script("arguments[0].click();", link)
+
+
         self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
 
     def register(self, full_name: str, email: str, password: str) -> None:
