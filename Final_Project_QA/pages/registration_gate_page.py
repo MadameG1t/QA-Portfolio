@@ -48,9 +48,9 @@ class RegistrationGatePage:
     def open_registration_via_add_to_cart(self) -> None:
 
         StorePage(self.driver).add_first_product_to_cart()
+
         self.wait.until(EC.visibility_of_element_located(self.EMAIL_INPUT))
-        self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK)).click()
-        self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
+        self.ensure_signup_form()
 
     def go_to_registration_form(self) -> None:
         self.open_registration_via_add_to_cart()
