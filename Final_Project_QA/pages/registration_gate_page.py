@@ -72,6 +72,9 @@ class RegistrationGatePage:
         self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
 
     def register(self, full_name: str, email: str, password: str) -> None:
+
+        self.ensure_signup_form()
+
         full_name_el = self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
         full_name_el.clear()
         full_name_el.send_keys(full_name)
