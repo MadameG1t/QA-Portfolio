@@ -43,7 +43,8 @@ class RegistrationGatePage:
 
     LOGIN_EMAIL_INPUT = (By.CSS_SELECTOR, "input[type='email'].form-input")
     LOGIN_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[type='password'].form-input")
-    LOGIN_BTN = (By.CSS_SELECTOR, "button.submit-btn")
+    LOGIN_BTN = (By.XPATH, "//button[contains(@class,'submit-btn') and normalize-space()='Sign In']")
+
 
     def __init__(self, driver: WebDriver, timeout: int = 10):
         self.driver = driver
@@ -114,6 +115,9 @@ class RegistrationGatePage:
         self.wait.until(EC.element_to_be_clickable(self.LOGIN_LINK)).click()
 
     def login(self, email: str, password: str) -> None:
+
+        self.wait.until(EC.element_to_be_clickable(self.LOGIN_BTN))
+
         email_el = self.wait.until(EC.visibility_of_element_located(self.LOGIN_EMAIL_INPUT))
         email_el.clear()
         email_el.send_keys(email)
