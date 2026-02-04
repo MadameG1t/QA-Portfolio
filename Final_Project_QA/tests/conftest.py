@@ -1,10 +1,9 @@
 import pytest
 from selenium import webdriver
-from selenium.common import TimeoutException
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
 
 from pages.age_gate_page import AgeGatePage
 from pages.registration_gate_page import RegistrationGatePage
@@ -12,10 +11,8 @@ from pages.store_page import StorePage
 from pages.star_rating_system_gate_page import StarRatingSystemGate
 from pages.Checkout_page import CheckoutPage
 
-
-from utils.constants import Urls, TestUsers
+from utils.constants import Urls, TestUsers, CheckoutData
 from utils.helpers import unique_email
-from utils.constants import Urls, CheckoutData
 
 
 @pytest.fixture()
@@ -40,21 +37,29 @@ def purchased_product(driver):
     email = unique_email("grocerymate")
     password = TestUsers.DEFAULT_PASSWORD
     reg.register(full_name=full_name, email=email, password=password)
-    error = reg.get_error_text()
-    print("Register error:", error)
 
-    print("Signup visible:", reg.is_signup_button_visible())
+
+    error = reg.get_error_text().lower()
+    if "already" in error and "exist" in error:
+        reg.switch_to_login()
+        reg.login(email=email, password=password)
 
     try:
-        WebDriverWait(driver, 5).until(EC.invisibility_of_element_located(RegistrationGatePage.AUTH_MODAL))
+        WebDriverWait(driver, 5).until(
+            EC.invisibility_of_element_located(RegistrationGatePage.AUTH_MODAL)
+        )
     except TimeoutException:
-        pass
+
+        reg.switch_to_login()
+        reg.login(email=email, password=password)
+        WebDriverWait(driver, 5).until(
+            EC.invisibility_of_element_located(RegistrationGatePage.AUTH_MODAL)
+        )
 
     driver.get(Urls.STORE)
     StorePage(driver).add_first_product_to_cart()
 
     driver.get(Urls.CHECKOUT)
-    print("At checkout:", driver.current_url)
     CheckoutPage(driver).complete_checkout(
         street=CheckoutData.STREET,
         city=CheckoutData.CITY,
@@ -65,7 +70,6 @@ def purchased_product(driver):
         cvv=CheckoutData.CARD_CVV,
     )
 
-    driver.get(Urls.CHECKOUT)
     if "/auth" in driver.current_url:
         raise AssertionError("Registration/login failed; still on /auth")
 
