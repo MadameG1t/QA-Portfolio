@@ -40,6 +40,10 @@ def purchased_product(driver):
     email = unique_email("grocerymate")
     password = TestUsers.DEFAULT_PASSWORD
     reg.register(full_name=full_name, email=email, password=password)
+    error = reg.get_error_text()
+    print("Register error:", error)
+
+    print("Signup visible:", reg.is_signup_button_visible())
 
     try:
         WebDriverWait(driver, 5).until(EC.invisibility_of_element_located(RegistrationGatePage.AUTH_MODAL))
@@ -60,6 +64,10 @@ def purchased_product(driver):
         exp=CheckoutData.CARD_EXPIRY,
         cvv=CheckoutData.CARD_CVV,
     )
+
+    driver.get(Urls.CHECKOUT)
+    if "/auth" in driver.current_url:
+        raise AssertionError("Registration/login failed; still on /auth")
 
 
     driver.get(Urls.PRODUCT_ORANGES)
