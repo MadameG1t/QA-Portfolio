@@ -47,7 +47,6 @@ def purchased_product(driver):
     except TimeoutException:
         pass
 
-    # now add item *after* login
     driver.get(Urls.STORE)
     StorePage(driver).add_first_product_to_cart()
 
