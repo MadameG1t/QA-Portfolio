@@ -18,6 +18,9 @@ class CheckoutPage:
         self.wait = WebDriverWait(driver, timeout)
 
     def complete_checkout(self, street, city, postal, number, name, exp, cvv):
+        print("Checkout URL:", self.driver.current_url)
+        print("Checkout title:", self.driver.title)
+
         self.wait.until(EC.visibility_of_element_located(self.STREET)).send_keys(street)
         self.driver.find_element(*self.CITY).send_keys(city)
         self.driver.find_element(*self.POSTAL).send_keys(postal)

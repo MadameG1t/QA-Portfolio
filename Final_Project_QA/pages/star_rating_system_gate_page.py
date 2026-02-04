@@ -63,6 +63,12 @@ class StarRatingSystemGate:
     def click_send(self) -> None:
         self.wait.until(EC.element_to_be_clickable(self.SEND_BTN)).click()
 
+    def is_send_enabled(self) -> bool:
+        btn = self.wait.until(EC.visibility_of_element_located(self.SEND_BTN))
+        disabled_attr = (btn.get_attribute("disabled") or "").strip().lower()
+        class_attr = (btn.get_attribute("class") or "").lower()
+        return btn.is_enabled() and disabled_attr == "" and "disabled" not in class_attr
+
     def get_restriction_message(self) -> str:
         return self.wait.until(EC.visibility_of_element_located(self.REVIEW_RESTRICTION_TEXT)).text.strip()
 
