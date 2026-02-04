@@ -12,6 +12,11 @@ class StorePage:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
+    def open_first_product(self) -> None:
+        cards = self.wait.until(EC.presence_of_all_elements_located(self.PRODUCT_CARDS))
+        self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", cards[0])
+        self.driver.execute_script("arguments[0].click();", cards[0])
+
     def add_first_product_to_cart(self) -> None:
         cards = self.wait.until(EC.presence_of_all_elements_located(self.PRODUCT_CARDS))
         first_card = cards[0]

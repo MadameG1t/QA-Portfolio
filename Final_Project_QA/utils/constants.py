@@ -8,7 +8,7 @@ class Urls:
     LOGIN = f"{BASE}/login"
     CART = f"{BASE}/cart"
     CHECKOUT = f"{BASE}/checkout"
-
+    PRODUCT_ORANGES = f"{BASE}/product/66b3a57b3fd5048eacb479a1"
 
 class AgeRules:
     MIN_AGE = 18
