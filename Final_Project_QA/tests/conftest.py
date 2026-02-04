@@ -1,6 +1,10 @@
 import pytest
 from selenium import webdriver
+from selenium.common import TimeoutException
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 
 from pages.age_gate_page import AgeGatePage
 from pages.registration_gate_page import RegistrationGatePage
@@ -37,6 +41,15 @@ def purchased_product(driver):
     email = unique_email("grocerymate")
     password = TestUsers.DEFAULT_PASSWORD
     reg.register(full_name=full_name, email=email, password=password)
+
+    try:
+        WebDriverWait(driver, 5).until(EC.invisibility_of_element_located(RegistrationGatePage.AUTH_MODAL))
+    except TimeoutException:
+        pass
+
+    # now add item *after* login
+    driver.get(Urls.STORE)
+    StorePage(driver).add_first_product_to_cart()
 
     driver.get(Urls.CART)
     CartPage(driver).click_buy_now()
