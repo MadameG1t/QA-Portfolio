@@ -38,6 +38,8 @@ class StarRatingSystemGate:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
+
+
     def select_star(self, stars: int) -> None:
         if stars not in (1, 2, 3, 4, 5):
             raise ValueError("stars must be an integer between 1 and 5")
