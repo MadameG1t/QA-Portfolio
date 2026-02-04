@@ -15,6 +15,13 @@ def make_folder(path):
         os.mkdir(path)
         print(f"Created folder: {path}")
 
+def move_to_month_folder(filename: str, month: str, invoices_folder: str) -> None:
+    source_path = os.path.join(invoices_folder, filename)
+    destination_path = os.path.join(invoices_folder, month, filename)
+
+    shutil.move(source_path, destination_path)
+
+
 parent_folder = os.getcwd()
 invoices_folder = os.path.join(parent_folder, "invoices")
 
