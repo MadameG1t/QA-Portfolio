@@ -1,4 +1,3 @@
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -26,5 +25,4 @@ class CheckoutPage:
         self.driver.find_element(*self.CARD_NAME).send_keys(name)
         self.driver.find_element(*self.EXPIRATION).send_keys(exp)
         self.driver.find_element(*self.CVV).send_keys(cvv)
-
         self.wait.until(EC.element_to_be_clickable(self.BUY_NOW)).click()
