@@ -51,8 +51,10 @@ def purchased_product(driver):
         cvv=CheckoutData.CARD_CVV,
     )
 
-    driver.get(Urls.STORE)
-    StorePage(driver).open_first_product()  # we’ll add this method
+    driver.get(Urls.PRODUCT_ORANGES)
+
+    return True
+
 
 
 @pytest.fixture
