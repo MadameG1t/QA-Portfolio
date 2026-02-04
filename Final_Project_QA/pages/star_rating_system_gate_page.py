@@ -6,6 +6,8 @@ from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from utils.constants import Urls
+
 
 class StarRatingSystemGate:
 
@@ -177,7 +179,9 @@ class StarRatingSystemGate:
         except TimeoutException:
             pass
 
-        self.driver.refresh()
+        # Reload via shop to ensure the review state updates server-side.
+        self.driver.get(Urls.STORE)
+        self.driver.get(Urls.PRODUCT_ORANGES)
         try:
             self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
         except TimeoutException:
