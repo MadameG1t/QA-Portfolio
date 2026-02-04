@@ -10,7 +10,6 @@ from pages.age_gate_page import AgeGatePage
 from pages.registration_gate_page import RegistrationGatePage
 from pages.store_page import StorePage
 from pages.star_rating_system_gate_page import StarRatingSystemGate
-from pages.cart_page import CartPage
 from pages.Checkout_page import CheckoutPage
 
 
@@ -50,9 +49,8 @@ def purchased_product(driver):
     driver.get(Urls.STORE)
     StorePage(driver).add_first_product_to_cart()
 
-    driver.get(Urls.CART)
-    CartPage(driver).click_buy_now()
-
+    driver.get(Urls.CHECKOUT)
+    print("At checkout:", driver.current_url)
     CheckoutPage(driver).complete_checkout(
         street=CheckoutData.STREET,
         city=CheckoutData.CITY,
@@ -63,8 +61,8 @@ def purchased_product(driver):
         cvv=CheckoutData.CARD_CVV,
     )
 
-    driver.get(Urls.PRODUCT_ORANGES)
 
+    driver.get(Urls.PRODUCT_ORANGES)
     return True
 
 
