@@ -10,8 +10,15 @@ def extract_month(filename):
     return parts[2].split(".")[0]
 
 
+def make_folder(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+        print(f"Created folder: {path}")
+
 parent_folder = os.getcwd()
 invoices_folder = os.path.join(parent_folder, "invoices")
+
+print("Organizing invoices...\n")
 
 for filename in os.listdir(invoices_folder):
 
@@ -20,16 +27,16 @@ for filename in os.listdir(invoices_folder):
 
     month = extract_month(filename)
 
-
     if month is None:
         continue
 
     month_folder = os.path.join(invoices_folder, month)
-    os.makedirs(month_folder, exist_ok=True)
+    make_folder(month_folder)
 
+    source = os.path.join(invoices_folder, filename)
+    destination = os.path.join(month_folder, filename)
 
-    src = os.path.join(invoices_folder, filename)
-    dst = os.path.join(month_folder, filename)
-    shutil.move(src, dst)
+    shutil.move(source, destination)
 
     print(f"Moved: {filename} -> {month}/")
+
