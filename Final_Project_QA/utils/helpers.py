@@ -24,4 +24,4 @@ def add_days(d: date, days: int) -> date:
     return d + timedelta(days=days)
 
 def unique_email(prefix="qa"):
-    return f"{prefix}_{int(time.time())}@example.com"
+    return f"{prefix}_{time.time_ns()}@example.com"

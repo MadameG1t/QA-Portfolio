@@ -1,10 +1,12 @@
 import re
 
-from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
+from utils.constants import Urls
 
 
 class StarRatingSystemGate:
@@ -38,6 +40,8 @@ class StarRatingSystemGate:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
+
+
     def select_star(self, stars: int) -> None:
         if stars not in (1, 2, 3, 4, 5):
             raise ValueError("stars must be an integer between 1 and 5")
@@ -51,7 +55,7 @@ class StarRatingSystemGate:
         }
 
         self.wait.until(EC.visibility_of_element_located(self.INTERACTIVE_RATING))
-        self.wait.until(EC.element_to_be_clickable(locator_map[stars])).click()
+        self._click_with_retry(locator_map[stars])
 
     def enter_review_text(self, text: str) -> None:
         field = self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
@@ -59,7 +63,37 @@ class StarRatingSystemGate:
         field.send_keys(text)
 
     def click_send(self) -> None:
-        self.wait.until(EC.element_to_be_clickable(self.SEND_BTN)).click()
+        try:
+            self._click_with_retry(self.SEND_BTN)
+        except TimeoutException:
+            # Fallback for cases where the button is visible but not "clickable"
+            btn = self.wait.until(EC.visibility_of_element_located(self.SEND_BTN))
+            self.driver.execute_script("arguments[0].click();", btn)
+
+    def _click_with_retry(self, locator, attempts: int = 2) -> None:
+        last_exc = None
+        for _ in range(attempts):
+            try:
+                self.wait.until(EC.element_to_be_clickable(locator)).click()
+                return
+            except StaleElementReferenceException as exc:
+                last_exc = exc
+        if last_exc:
+            raise last_exc
+
+    def is_send_enabled(self) -> bool:
+        last_exc = None
+        for _ in range(2):
+            try:
+                btn = self.wait.until(EC.visibility_of_element_located(self.SEND_BTN))
+                disabled_attr = (btn.get_attribute("disabled") or "").strip().lower()
+                class_attr = (btn.get_attribute("class") or "").lower()
+                return btn.is_enabled() and disabled_attr == "" and "disabled" not in class_attr
+            except StaleElementReferenceException as exc:
+                last_exc = exc
+        if last_exc:
+            raise last_exc
+        return False
 
     def get_restriction_message(self) -> str:
         return self.wait.until(EC.visibility_of_element_located(self.REVIEW_RESTRICTION_TEXT)).text.strip()
@@ -122,6 +156,14 @@ class StarRatingSystemGate:
         self.wait.until(EC.element_to_be_clickable(self.DELETE_BTN)).click()
 
     def confirm_delete_if_present(self) -> None:
+
+        try:
+            alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
+            alert.accept()
+            return
+        except TimeoutException:
+            pass
+
         try:
             self.wait.until(EC.element_to_be_clickable(self.CONFIRM_DELETE_BTN)).click()
         except TimeoutException:
@@ -134,5 +176,13 @@ class StarRatingSystemGate:
 
         try:
             self.wait.until(EC.invisibility_of_element_located(self.MENU_ICON))
+        except TimeoutException:
+            pass
+
+        # Reload via shop to ensure the review state updates server-side.
+        self.driver.get(Urls.STORE)
+        self.driver.get(Urls.PRODUCT_ORANGES)
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
         except TimeoutException:
             pass

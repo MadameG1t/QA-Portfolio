@@ -37,6 +37,15 @@ class RegistrationGatePage:
     AGE_DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder*='DD'], input[placeholder*='YYYY'], input[type='text']")
     AGE_CONFIRM_BTN = (By.XPATH, "//button[normalize-space()='Enter' or normalize-space()='Confirm' or normalize-space()='Yes']")
 
+    LOGIN_LINK = (
+        By.XPATH, "//a[contains(@class,'switch-link') and contains(.,'Already have an account')]"
+    )
+
+    LOGIN_EMAIL_INPUT = (By.CSS_SELECTOR, "input[type='email'].form-input")
+    LOGIN_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[type='password'].form-input")
+    LOGIN_BTN = (By.XPATH, "//button[contains(@class,'submit-btn') and normalize-space()='Sign In']")
+
+
     def __init__(self, driver: WebDriver, timeout: int = 10):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
@@ -102,11 +111,22 @@ class RegistrationGatePage:
         except TimeoutException:
             return ""
 
-    def is_signup_button_visible(self) -> bool:
-        try:
-            return self.driver.find_element(*self.SIGN_UP_BTN).is_displayed()
-        except Exception:
-            return False
+    def switch_to_login(self) -> None:
+        self.wait.until(EC.element_to_be_clickable(self.LOGIN_LINK)).click()
+
+    def login(self, email: str, password: str) -> None:
+
+        self.wait.until(EC.element_to_be_clickable(self.LOGIN_BTN))
+
+        email_el = self.wait.until(EC.visibility_of_element_located(self.LOGIN_EMAIL_INPUT))
+        email_el.clear()
+        email_el.send_keys(email)
+
+        pw_el = self.driver.find_element(*self.LOGIN_PASSWORD_INPUT)
+        pw_el.clear()
+        pw_el.send_keys(password)
+
+        self.wait.until(EC.element_to_be_clickable(self.LOGIN_BTN)).click()
 
     def pass_age_gate_if_present(self) -> None:
         try:
