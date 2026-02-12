@@ -5,11 +5,11 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class CartPage:
-    # TODO: Replace these locators after you inspect the cart page
+    # TODO: Replace CART_LINK after inspecting the cart page (TOTAL_TEXT, SHIPPING_COST, REMOVE_FIRST_ITEM_BTN are set)
     CART_LINK = (By.CSS_SELECTOR, "a[href='/cart'], a[href='/checkout']")
-    TOTAL_TEXT = (By.CSS_SELECTOR, ".total, #total, [data-testid='total']")
-    SHIPPING_MESSAGE = (By.CSS_SELECTOR, ".shipping-message, #shippingMessage, [data-testid='shipping-message']")
-    REMOVE_FIRST_ITEM_BTN = (By.CSS_SELECTOR, ".remove-item, .btn-remove, [data-testid='remove-item']")
+    TOTAL_TEXT = (By.CSS_SELECTOR, ".total-container h5:last-child")
+    SHIPPING_COST = (By.CSS_SELECTOR, ".shipment-container h5:last-child")
+    REMOVE_FIRST_ITEM_BTN = (By.CSS_SELECTOR, "button.minus")
 
     def __init__(self, driver: WebDriver, timeout: int = 10):
         self.driver = driver
@@ -21,8 +21,8 @@ class CartPage:
     def get_total_text(self) -> str:
         return self.wait.until(EC.visibility_of_element_located(self.TOTAL_TEXT)).text.strip()
 
-    def get_shipping_message(self) -> str:
-        return self.wait.until(EC.visibility_of_element_located(self.SHIPPING_MESSAGE)).text.strip()
+    def get_shipping_cost_text(self) -> str:
+        return self.wait.until(EC.visibility_of_element_located(self.SHIPPING_COST)).text.strip()
 
     def remove_first_item(self) -> None:
         self.wait.until(EC.element_to_be_clickable(self.REMOVE_FIRST_ITEM_BTN)).click()
