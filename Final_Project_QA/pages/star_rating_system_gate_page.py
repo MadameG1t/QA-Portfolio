@@ -58,9 +58,17 @@ class StarRatingSystemGate:
         self._click_with_retry(locator_map[stars])
 
     def enter_review_text(self, text: str) -> None:
-        field = self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
-        field.clear()
-        field.send_keys(text)
+        last_exc = None
+        for _ in range(2):
+            try:
+                field = self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
+                field.clear()
+                field.send_keys(text)
+                return
+            except StaleElementReferenceException as exc:
+                last_exc = exc
+        if last_exc:
+            raise last_exc
 
     def click_send(self) -> None:
         try:
