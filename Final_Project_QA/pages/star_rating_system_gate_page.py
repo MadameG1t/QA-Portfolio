@@ -129,6 +129,13 @@ class StarRatingSystemGate:
 
         raise AssertionError("Review menu icons exist, but none are visible/clickable.")
 
+    def is_review_form_visible(self) -> bool:
+        try:
+            field = self.driver.find_element(*self.REVIEW_TEXTAREA)
+            return field.is_displayed()
+        except Exception:
+            return False
+
     def click_delete(self) -> None:
         self._click_locator(self.DELETE_BTN)
 
