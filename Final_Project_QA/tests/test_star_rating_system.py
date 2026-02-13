@@ -34,8 +34,8 @@ def test_zero_star_rating_is_invalid(star_page, driver):
     before = page.get_display_review_count()
 
     page.enter_review_text("Submitting without selecting stars.")
-    if page.is_send_enabled():
-        page.click_send()
+    page.click_send()
+    assert "Data entry invalid" in page.get_error_text()
 
     driver.refresh()
     after = page.get_display_review_count()
