@@ -7,7 +7,7 @@ from utils.constants import Urls
 
 
 class CartPage:
-    # Cart page locators (checkout page)
+
     TOTAL_TEXT = (By.CSS_SELECTOR, ".total-container h5:last-child")
     SHIPPING_COST = (By.CSS_SELECTOR, ".shipment-container h5:last-child")
     REMOVE_FIRST_ITEM_BTN = (By.CSS_SELECTOR, "button.minus")
