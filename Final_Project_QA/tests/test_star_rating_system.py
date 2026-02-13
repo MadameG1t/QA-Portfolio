@@ -42,8 +42,6 @@ def test_zero_star_rating_is_invalid(star_page, driver):
 
     assert after == before, "Review count should not change when no star is selected."
 
-
-
 def test_rating_submission_updates_review_count_integration(star_page, driver):
 
     page = star_page
