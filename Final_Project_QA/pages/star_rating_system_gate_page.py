@@ -10,7 +10,7 @@ from utils.constants import Urls
 
 
 class StarRatingSystemGate:
-    # --- Review form ---
+
     ADD_COMMENT_HEADER = (By.XPATH, "//h5[normalize-space()='Add a comment']")
     INTERACTIVE_RATING = (By.CSS_SELECTOR, ".new-review-rating-stars .interactive-rating")
 
@@ -23,15 +23,12 @@ class StarRatingSystemGate:
     REVIEW_TEXTAREA = (By.CSS_SELECTOR, "textarea.new-review-form-control")
     SEND_BTN = (By.CSS_SELECTOR, "button.new-review-btn-send")
 
-    # --- Messages ---
     REVIEW_RESTRICTION_TEXT = (By.CSS_SELECTOR, "div.reviewRestriction p")
     ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-danger, .invalid-feedback")
 
-    # --- Display rating on product page ---
     DISPLAY_RATING_CONTAINER = (By.CSS_SELECTOR, ".ratingContainer .custom-rating")
     DISPLAY_REVIEW_COUNT = (By.CSS_SELECTOR, ".ratingContainer .reviews")
 
-    # --- Review actions/menu ---
     MENU_ICON = (By.CSS_SELECTOR, "div.menu-icon")  # if site changes, update this
     DELETE_BTN = (By.XPATH, "//button[normalize-space()='Delete' or normalize-space()='Remove']")
     CONFIRM_DELETE_BTN = (By.XPATH, "//button[normalize-space()='Confirm' or normalize-space()='Yes' or normalize-space()='Delete']")
@@ -40,9 +37,8 @@ class StarRatingSystemGate:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
-    # ---------- Helpers ----------
     def _click_locator(self, locator) -> None:
-        """Normal click, fallback to JS click."""
+
         try:
             self.wait.until(EC.element_to_be_clickable(locator)).click()
         except TimeoutException:
@@ -50,15 +46,14 @@ class StarRatingSystemGate:
             self.driver.execute_script("arguments[0].click();", el)
 
     def _scroll_to_review_section(self) -> None:
-        """Makes sure the review UI is on screen (often needed for menus to appear)."""
+
         try:
             header = self.wait.until(EC.visibility_of_element_located(self.ADD_COMMENT_HEADER))
             self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", header)
         except TimeoutException:
-            # fallback: scroll down a bit
+
             self.driver.execute_script("window.scrollBy(0, 700);")
 
-    # ---------- Core actions ----------
     def select_star(self, stars: int) -> None:
         if stars not in (1, 2, 3, 4, 5):
             raise ValueError("stars must be an integer between 1 and 5")
@@ -89,14 +84,13 @@ class StarRatingSystemGate:
         self._click_locator(self.SEND_BTN)
 
     def add_review(self, stars: int, text: str) -> None:
-        """Creates a review (needed before you can delete)."""
+
         self.select_star(stars)
         self.enter_review_text(text)
         self.click_send()
-        # small wait for UI to update
+
         WebDriverWait(self.driver, 5).until(lambda d: True)
 
-    # ---------- Reading UI ----------
     def get_restriction_message_safe(self) -> str:
         try:
             return self.wait.until(EC.visibility_of_element_located(self.REVIEW_RESTRICTION_TEXT)).text.strip()
@@ -117,7 +111,6 @@ class StarRatingSystemGate:
         m = re.search(r"\((\d+)\)", text)
         return int(m.group(1)) if m else 0
 
-    # ---------- Delete ----------
     def open_review_menu(self) -> None:
         self._scroll_to_review_section()
 
@@ -140,7 +133,7 @@ class StarRatingSystemGate:
         self._click_locator(self.DELETE_BTN)
 
     def confirm_delete_if_present(self) -> None:
-        # JS alert confirm
+
         try:
             alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
             alert.accept()
@@ -148,7 +141,6 @@ class StarRatingSystemGate:
         except TimeoutException:
             pass
 
-        # in-page confirm button
         try:
             self._click_locator(self.CONFIRM_DELETE_BTN)
         except TimeoutException:
@@ -159,6 +151,5 @@ class StarRatingSystemGate:
         self.click_delete()
         self.confirm_delete_if_present()
 
-        # reload to ensure UI reflects deletion
         self.driver.get(Urls.PRODUCT_ORANGES)
         WebDriverWait(self.driver, 5).until(lambda d: True)
