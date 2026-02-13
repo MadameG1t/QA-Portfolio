@@ -10,7 +10,8 @@ from utils.constants import Urls
 
 
 class StarRatingSystemGate:
-
+    # --- Review form ---
+    ADD_COMMENT_HEADER = (By.XPATH, "//h5[normalize-space()='Add a comment']")
     INTERACTIVE_RATING = (By.CSS_SELECTOR, ".new-review-rating-stars .interactive-rating")
 
     STAR_1 = (By.CSS_SELECTOR, ".new-review-rating-stars .interactive-rating span.star:nth-child(1)")
@@ -22,17 +23,16 @@ class StarRatingSystemGate:
     REVIEW_TEXTAREA = (By.CSS_SELECTOR, "textarea.new-review-form-control")
     SEND_BTN = (By.CSS_SELECTOR, "button.new-review-btn-send")
 
-
+    # --- Messages ---
     REVIEW_RESTRICTION_TEXT = (By.CSS_SELECTOR, "div.reviewRestriction p")
     ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-danger, .invalid-feedback")
 
-
+    # --- Display rating on product page ---
     DISPLAY_RATING_CONTAINER = (By.CSS_SELECTOR, ".ratingContainer .custom-rating")
     DISPLAY_REVIEW_COUNT = (By.CSS_SELECTOR, ".ratingContainer .reviews")
 
-
-    MENU_ICON = (By.CSS_SELECTOR, "div.menu-icon")
-    EDIT_BTN = (By.XPATH, "//button[normalize-space()='Edit']")
+    # --- Review actions/menu ---
+    MENU_ICON = (By.CSS_SELECTOR, "div.menu-icon")  # if site changes, update this
     DELETE_BTN = (By.XPATH, "//button[normalize-space()='Delete' or normalize-space()='Remove']")
     CONFIRM_DELETE_BTN = (By.XPATH, "//button[normalize-space()='Confirm' or normalize-space()='Yes' or normalize-space()='Delete']")
 
@@ -40,24 +40,38 @@ class StarRatingSystemGate:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
+    # ---------- Helpers ----------
+    def _click_locator(self, locator) -> None:
+        """Normal click, fallback to JS click."""
+        try:
+            self.wait.until(EC.element_to_be_clickable(locator)).click()
+        except TimeoutException:
+            el = self.wait.until(EC.visibility_of_element_located(locator))
+            self.driver.execute_script("arguments[0].click();", el)
 
+    def _scroll_to_review_section(self) -> None:
+        """Makes sure the review UI is on screen (often needed for menus to appear)."""
+        try:
+            header = self.wait.until(EC.visibility_of_element_located(self.ADD_COMMENT_HEADER))
+            self.driver.execute_script("arguments[0].scrollIntoView({block: 'center'});", header)
+        except TimeoutException:
+            # fallback: scroll down a bit
+            self.driver.execute_script("window.scrollBy(0, 700);")
 
+    # ---------- Core actions ----------
     def select_star(self, stars: int) -> None:
         if stars not in (1, 2, 3, 4, 5):
             raise ValueError("stars must be an integer between 1 and 5")
 
-        locator_map = {
-            1: self.STAR_1,
-            2: self.STAR_2,
-            3: self.STAR_3,
-            4: self.STAR_4,
-            5: self.STAR_5,
-        }
+        locator_map = {1: self.STAR_1, 2: self.STAR_2, 3: self.STAR_3, 4: self.STAR_4, 5: self.STAR_5}
 
+        self._scroll_to_review_section()
         self.wait.until(EC.visibility_of_element_located(self.INTERACTIVE_RATING))
-        self._click_with_retry(locator_map[stars])
+        self._click_locator(locator_map[stars])
 
     def enter_review_text(self, text: str) -> None:
+        self._scroll_to_review_section()
+
         last_exc = None
         for _ in range(2):
             try:
@@ -71,41 +85,18 @@ class StarRatingSystemGate:
             raise last_exc
 
     def click_send(self) -> None:
-        try:
-            self._click_with_retry(self.SEND_BTN)
-        except TimeoutException:
-            # Fallback for cases where the button is visible but not "clickable"
-            btn = self.wait.until(EC.visibility_of_element_located(self.SEND_BTN))
-            self.driver.execute_script("arguments[0].click();", btn)
+        self._scroll_to_review_section()
+        self._click_locator(self.SEND_BTN)
 
-    def _click_with_retry(self, locator, attempts: int = 2) -> None:
-        last_exc = None
-        for _ in range(attempts):
-            try:
-                self.wait.until(EC.element_to_be_clickable(locator)).click()
-                return
-            except StaleElementReferenceException as exc:
-                last_exc = exc
-        if last_exc:
-            raise last_exc
+    def add_review(self, stars: int, text: str) -> None:
+        """Creates a review (needed before you can delete)."""
+        self.select_star(stars)
+        self.enter_review_text(text)
+        self.click_send()
+        # small wait for UI to update
+        WebDriverWait(self.driver, 5).until(lambda d: True)
 
-    def is_send_enabled(self) -> bool:
-        last_exc = None
-        for _ in range(2):
-            try:
-                btn = self.wait.until(EC.visibility_of_element_located(self.SEND_BTN))
-                disabled_attr = (btn.get_attribute("disabled") or "").strip().lower()
-                class_attr = (btn.get_attribute("class") or "").lower()
-                return btn.is_enabled() and disabled_attr == "" and "disabled" not in class_attr
-            except StaleElementReferenceException as exc:
-                last_exc = exc
-        if last_exc:
-            raise last_exc
-        return False
-
-    def get_restriction_message(self) -> str:
-        return self.wait.until(EC.visibility_of_element_located(self.REVIEW_RESTRICTION_TEXT)).text.strip()
-
+    # ---------- Reading UI ----------
     def get_restriction_message_safe(self) -> str:
         try:
             return self.wait.until(EC.visibility_of_element_located(self.REVIEW_RESTRICTION_TEXT)).text.strip()
@@ -118,45 +109,22 @@ class StarRatingSystemGate:
         except TimeoutException:
             return ""
 
-
-    def interactive_stars(self):
-        self.wait.until(EC.visibility_of_element_located(self.INTERACTIVE_RATING))
-        container = self.driver.find_element(*self.INTERACTIVE_RATING)
-        return container.find_elements(By.CSS_SELECTOR, "span.star")
-
-    def count_non_empty_interactive_stars(self) -> int:
-        stars = self.interactive_stars()
-        count = 0
-        for s in stars:
-            cls = (s.get_attribute("class") or "").lower()
-            if "empty" not in cls:
-                count += 1
-        return count
-
-    def display_rating_exists(self) -> bool:
-        try:
-            self.wait.until(EC.visibility_of_element_located(self.DISPLAY_RATING_CONTAINER))
-            return True
-        except Exception:
-            return False
-
     def get_display_review_count_text(self) -> str:
         return self.wait.until(EC.visibility_of_element_located(self.DISPLAY_REVIEW_COUNT)).text.strip()
 
     def get_display_review_count(self) -> int:
-
         text = self.get_display_review_count_text()
         m = re.search(r"\((\d+)\)", text)
         return int(m.group(1)) if m else 0
 
+    # ---------- Delete ----------
     def open_review_menu(self) -> None:
-        # If the user has no review, the menu icons don't exist.
+        self._scroll_to_review_section()
+
         try:
-            menus = WebDriverWait(self.driver, 3).until(
-                EC.presence_of_all_elements_located(self.MENU_ICON)
-            )
+            menus = WebDriverWait(self.driver, 5).until(EC.presence_of_all_elements_located(self.MENU_ICON))
         except TimeoutException:
-            raise AssertionError("No review menu icon found. (Maybe no review exists yet for this user?)")
+            raise AssertionError("No review menu icon found (likely no review exists yet for this user).")
 
         for m in menus:
             if m.is_displayed():
@@ -168,25 +136,11 @@ class StarRatingSystemGate:
 
         raise AssertionError("Review menu icons exist, but none are visible/clickable.")
 
-    def restriction_is_visible(self) -> bool:
-        try:
-            el = self.driver.find_element(*self.REVIEW_RESTRICTION_TEXT)
-            return el.is_displayed() and el.text.strip() != ""
-        except Exception:
-            return False
-
-    def assert_restriction_message(self, expected: str) -> None:
-        actual = self.get_restriction_message()
-        assert expected in actual, f"Expected restriction to contain '{expected}', got '{actual}'"
-
-    def click_edit(self) -> None:
-        self.wait.until(EC.element_to_be_clickable(self.EDIT_BTN)).click()
-
     def click_delete(self) -> None:
-        self.wait.until(EC.element_to_be_clickable(self.DELETE_BTN)).click()
+        self._click_locator(self.DELETE_BTN)
 
     def confirm_delete_if_present(self) -> None:
-
+        # JS alert confirm
         try:
             alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
             alert.accept()
@@ -194,8 +148,9 @@ class StarRatingSystemGate:
         except TimeoutException:
             pass
 
+        # in-page confirm button
         try:
-            self.wait.until(EC.element_to_be_clickable(self.CONFIRM_DELETE_BTN)).click()
+            self._click_locator(self.CONFIRM_DELETE_BTN)
         except TimeoutException:
             pass
 
@@ -204,14 +159,6 @@ class StarRatingSystemGate:
         self.click_delete()
         self.confirm_delete_if_present()
 
-        try:
-            self.wait.until(EC.invisibility_of_element_located(self.MENU_ICON))
-        except TimeoutException:
-            pass
-
-        self.driver.get(Urls.STORE)
+        # reload to ensure UI reflects deletion
         self.driver.get(Urls.PRODUCT_ORANGES)
-        try:
-            self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
-        except TimeoutException:
-            pass
+        WebDriverWait(self.driver, 5).until(lambda d: True)
