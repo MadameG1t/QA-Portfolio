@@ -150,12 +150,34 @@ class StarRatingSystemGate:
         return int(m.group(1)) if m else 0
 
     def open_review_menu(self) -> None:
-        menus = self.wait.until(EC.presence_of_all_elements_located(self.MENU_ICON))
+        # If the user has no review, the menu icons don't exist.
+        try:
+            menus = WebDriverWait(self.driver, 3).until(
+                EC.presence_of_all_elements_located(self.MENU_ICON)
+            )
+        except TimeoutException:
+            raise AssertionError("No review menu icon found. (Maybe no review exists yet for this user?)")
+
         for m in menus:
             if m.is_displayed():
-                m.click()
+                try:
+                    m.click()
+                except Exception:
+                    self.driver.execute_script("arguments[0].click();", m)
                 return
-        raise AssertionError("No visible review menu icon found for this user.")
+
+        raise AssertionError("Review menu icons exist, but none are visible/clickable.")
+
+    def restriction_is_visible(self) -> bool:
+        try:
+            el = self.driver.find_element(*self.REVIEW_RESTRICTION_TEXT)
+            return el.is_displayed() and el.text.strip() != ""
+        except Exception:
+            return False
+
+    def assert_restriction_message(self, expected: str) -> None:
+        actual = self.get_restriction_message()
+        assert expected in actual, f"Expected restriction to contain '{expected}', got '{actual}'"
 
     def click_edit(self) -> None:
         self.wait.until(EC.element_to_be_clickable(self.EDIT_BTN)).click()
@@ -187,7 +209,6 @@ class StarRatingSystemGate:
         except TimeoutException:
             pass
 
-        # Reload via shop to ensure the review state updates server-side.
         self.driver.get(Urls.STORE)
         self.driver.get(Urls.PRODUCT_ORANGES)
         try:

@@ -1,12 +1,18 @@
 import pytest
 
 from pages.star_rating_system_gate_page import StarRatingSystemGate
+from utils.constants import Urls
 
 
 @pytest.fixture
 def star_page(driver, purchased_product):
     return StarRatingSystemGate(driver)
 
+def test_user_cannot_review_without_purchase(driver):
+    driver.get(Urls.PRODUCT_ORANGES)
+    page = StarRatingSystemGate(driver)
+
+    page.assert_restriction_message("You need to buy this product")
 
 def test_user_can_delete_written_feedback(star_page, driver):
 
