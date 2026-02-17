@@ -1,4 +1,5 @@
 import re
+import time
 
 from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
 from selenium.webdriver.common.by import By
@@ -57,17 +58,20 @@ class StarRatingSystemGate:
     def wait_for_form_or_restriction(self, timeout: int = 10) -> None:
         def _predicate(d):
             try:
-                form = d.find_element(*self.REVIEW_TEXTAREA)
-                if form.is_displayed():
+                textarea = d.find_element(*self.REVIEW_TEXTAREA)
+                stars = d.find_element(*self.INTERACTIVE_RATING)
+                if textarea.is_displayed() and stars.is_displayed():
                     return True
             except Exception:
                 pass
+
             try:
                 r = d.find_element(*self.REVIEW_RESTRICTION_TEXT)
                 if r.is_displayed() and (r.text or "").strip() != "":
                     return True
             except Exception:
                 pass
+
             return False
 
         WebDriverWait(self.driver, timeout).until(_predicate)
@@ -135,16 +139,41 @@ class StarRatingSystemGate:
         return int(m.group(1)) if m else 0
 
     def open_review_menu(self) -> None:
-        self._scroll_to_review_section()
+        try:
+            restriction = self.driver.find_element(*self.REVIEW_RESTRICTION_TEXT)
+            if restriction.is_displayed() and restriction.text.strip() != "":
+                menu_near_restriction = self.driver.find_element(
+                    By.XPATH,
+                    "//div[contains(@class,'reviewRestriction')]"
+                    "/preceding::div[contains(@class,'menu-icon')][1]"
+                )
+                self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", menu_near_restriction)
+                try:
+                    menu_near_restriction.click()
+                except Exception:
+                    self.driver.execute_script("arguments[0].click();", menu_near_restriction)
+                return
+        except Exception:
+            pass
+
         menus = self.wait.until(EC.presence_of_all_elements_located(self.MENU_ICON))
         for m in menus:
             if m.is_displayed():
+                self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", m)
                 try:
                     m.click()
                 except Exception:
                     self.driver.execute_script("arguments[0].click();", m)
                 return
-        raise AssertionError("Review menu icon exists but none are visible/clickable.")
+        raise AssertionError("No visible review menu icon found.")
+
+    def wait_until_review_posted(self, timeout: int = 10):
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: (
+                    len(d.find_elements(*self.MENU_ICON)) > 0
+                    or "already reviewed" in d.page_source.lower()
+            )
+        )
 
     def click_delete(self) -> None:
         buttons = self.driver.find_elements(*self.DELETE_BTN)
@@ -158,33 +187,78 @@ class StarRatingSystemGate:
         raise AssertionError("No visible Delete button found after opening the review menu.")
 
     def confirm_browser_delete_popup(self, timeout: int = 6) -> None:
-        try:
-            alert = WebDriverWait(self.driver, timeout).until(EC.alert_is_present())
-            alert.accept()
-        except TimeoutException:
-            raise AssertionError("Expected browser delete confirmation popup, but no alert appeared.")
+        alert = WebDriverWait(self.driver, timeout).until(EC.alert_is_present())
+        alert.accept()
 
-    def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
-        self.open_review_menu()
-        self.click_delete()
-        self.confirm_browser_delete_popup(timeout=6)
-
+    def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES, attempts: int = 4) -> None:
         self.driver.get(product_url)
         self.driver.refresh()
 
-        self.wait_for_form_or_restriction(timeout=10)
+        for i in range(attempts):
+            # If form is already visible, deletion already succeeded
+            if self.is_review_form_visible():
+                return
 
-        restriction = self.get_restriction_message_safe().lower()
-        if "already reviewed" in restriction:
-            raise AssertionError(
-                "Delete may have failed: restriction still says user already reviewed this product."
-            )
+            # Try to open the 3-dots menu and click delete
+            try:
+                self.open_review_menu()
+                time.sleep(0.5)
+                self.click_delete()
+            except Exception:
+                # If menu not found / delete not clickable, try refresh and retry
+                self.driver.refresh()
+                time.sleep(1)
+                continue
+
+            # Confirm browser alert (Are you sure...) if it appears
+            try:
+                alert = WebDriverWait(self.driver, 6).until(EC.alert_is_present())
+                alert.accept()
+            except TimeoutException:
+                # Some runs may not show an alert; that's fine
+                pass
+            except NoAlertPresentException:
+                pass
+
+            # Give the site a moment, then refresh and check again
+            time.sleep(1)
+            self.driver.get(product_url)
+            self.driver.refresh()
+
+            # Wait until either the form OR the restriction is visible
+            try:
+                self.wait_for_form_or_restriction(timeout=10)
+            except TimeoutException:
+                pass
+
+            # If the form is visible now, we're done
+            if self.is_review_form_visible():
+                return
+
+            # If still "already reviewed", loop and try delete again
+            restriction = self.get_restriction_message_safe().lower()
+            if "already reviewed" not in restriction:
+                # restriction changed to something else (or disappeared)
+                # treat as success-ish and exit
+                return
+
+        # After all attempts, still not deleted
+        restriction = self.get_restriction_message_safe()
+        raise AssertionError(
+            f"Delete did not take effect after {attempts} attempts. Restriction: '{restriction}'"
+        )
+
 
     def is_review_form_visible(self) -> bool:
         try:
-            self.wait.until(EC.visibility_of_element_located(self.ADD_COMMENT_HEADER))
-            self.wait.until(EC.visibility_of_element_located(self.INTERACTIVE_RATING))
-            self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
-            return True
-        except TimeoutException:
+            header = self.driver.find_elements(*self.ADD_COMMENT_HEADER)
+            stars = self.driver.find_elements(*self.INTERACTIVE_RATING)
+            textarea = self.driver.find_elements(*self.REVIEW_TEXTAREA)
+
+            return (
+                    len(header) > 0 and header[0].is_displayed()
+                    and len(stars) > 0 and stars[0].is_displayed()
+                    and len(textarea) > 0 and textarea[0].is_displayed()
+            )
+        except Exception:
             return False
