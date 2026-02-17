@@ -17,13 +17,13 @@ def test_user_cannot_review_without_purchase(driver):
     message = page.get_restriction_message_safe()
     assert "You need to buy this product" in message
 
-def test_user_can_delete_written_feedback(star_page, driver):
+def test_user_can_delete_written_feedback(star_page):
     page = star_page
 
     page.add_review(stars=5, text="Test review to delete")
     page.delete_my_review()
 
-    assert page.is_review_form_visible(), "Review form should be visible after deleting review (maybe needs refresh)."
+    assert page.is_review_form_visible(), "After deletion, the review form should be visible again."
 
 def test_zero_star_rating_is_invalid(star_page, driver):
     page = star_page

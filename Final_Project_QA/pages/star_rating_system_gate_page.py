@@ -137,12 +137,11 @@ class StarRatingSystemGate:
         raise AssertionError("Review menu icons exist, but none are visible/clickable.")
 
     def is_review_form_visible(self) -> bool:
-
         try:
-            el = WebDriverWait(self.driver, 3).until(
-                EC.visibility_of_element_located(self.REVIEW_TEXTAREA)
-            )
-            return el.is_displayed()
+            self.wait.until(EC.visibility_of_element_located(self.ADD_COMMENT_HEADER))
+            self.wait.until(EC.visibility_of_element_located(self.INTERACTIVE_RATING))
+            self.wait.until(EC.visibility_of_element_located(self.REVIEW_TEXTAREA))
+            return True
         except TimeoutException:
             return False
 
@@ -170,18 +169,16 @@ class StarRatingSystemGate:
     def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
         self.open_review_menu()
         self.click_delete()
-        self.confirm_browser_delete_popup()
+        self.confirm_browser_delete_popup(timeout=5)
 
-        self.refresh_product_page(product_url)
+        self.driver.get(product_url)
 
         if not self.is_review_form_visible():
-            # helpful debug
             restriction = self.get_restriction_message_safe()
             raise AssertionError(
-                "After deleting, review form is still not visible. "
+                "Delete may have failed: review form did not re-appear. "
                 f"Restriction message (if any): '{restriction}'"
             )
-
     def click_delete(self) -> None:
         self._click_locator(self.DELETE_BTN)
 
