@@ -170,7 +170,7 @@ class StarRatingSystemGate:
     def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
         self.open_review_menu()
         self.click_delete()
-        self.confirm_delete_if_present()
+        self.confirm_browser_delete_popup()
 
         self.refresh_product_page(product_url)
 
@@ -185,16 +185,6 @@ class StarRatingSystemGate:
     def click_delete(self) -> None:
         self._click_locator(self.DELETE_BTN)
 
-    def confirm_delete_if_present(self) -> None:
-
-        try:
-            alert = WebDriverWait(self.driver, 2).until(EC.alert_is_present())
-            alert.accept()
-            return
-        except TimeoutException:
-            pass
-
-        try:
-            self._click_locator(self.CONFIRM_DELETE_BTN)
-        except TimeoutException:
-            pass
+    def confirm_browser_delete_popup(self, timeout=5):
+        alert = WebDriverWait(self.driver, timeout).until(EC.alert_is_present())
+        alert.accept()
