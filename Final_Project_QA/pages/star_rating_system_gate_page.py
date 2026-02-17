@@ -24,7 +24,10 @@ class StarRatingSystemGate:
     SEND_BTN = (By.CSS_SELECTOR, "button.new-review-btn-send")
 
     REVIEW_RESTRICTION_TEXT = (By.CSS_SELECTOR, "div.reviewRestriction p")
-    ERROR_TEXT = (By.CSS_SELECTOR, "[role='alert'], .error, .alert, .text-danger, .invalid-feedback")
+    ERROR_TEXT = (
+        By.CSS_SELECTOR,
+        "[role='alert'], [role='status'], .error, .alert, .text-danger, .invalid-feedback"
+    )
 
     DISPLAY_RATING_CONTAINER = (By.CSS_SELECTOR, ".ratingContainer .custom-rating")
     DISPLAY_REVIEW_COUNT = (By.CSS_SELECTOR, ".ratingContainer .reviews")
@@ -32,6 +35,8 @@ class StarRatingSystemGate:
     MENU_ICON = (By.CSS_SELECTOR, "div.menu-icon")  # if site changes, update this
     DELETE_BTN = (By.XPATH, "//button[normalize-space()='Delete' or normalize-space()='Remove']")
     CONFIRM_DELETE_BTN = (By.XPATH, "//button[normalize-space()='Confirm' or normalize-space()='Yes' or normalize-space()='Delete']")
+    ADD_COMMENT_HEADER = (By.XPATH, "//h5[normalize-space()='Add a comment']")
+    REVIEW_FORM_CONTAINER = (By.CSS_SELECTOR, ".new-review-card-body")
 
     def __init__(self, driver: WebDriver, timeout: int = 10):
         self.driver = driver
@@ -99,7 +104,8 @@ class StarRatingSystemGate:
 
     def get_error_text(self) -> str:
         try:
-            return self.wait.until(EC.visibility_of_element_located(self.ERROR_TEXT)).text.strip()
+            el = self.wait.until(EC.visibility_of_element_located(self.ERROR_TEXT))
+            return el.text.strip()
         except TimeoutException:
             return ""
 
@@ -131,10 +137,13 @@ class StarRatingSystemGate:
 
     def is_review_form_visible(self) -> bool:
         try:
-            field = self.driver.find_element(*self.REVIEW_TEXTAREA)
-            return field.is_displayed()
-        except Exception:
+            return self.wait.until(EC.visibility_of_element_located(self.REVIEW_FORM_CONTAINER)).is_displayed()
+        except TimeoutException:
             return False
+
+    def refresh_product_page(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
+        self.driver.get(product_url)
+        self.wait.until(EC.presence_of_element_located((By.TAG_NAME, "body")))
 
     def click_delete(self) -> None:
         self._click_locator(self.DELETE_BTN)
@@ -153,10 +162,12 @@ class StarRatingSystemGate:
         except TimeoutException:
             pass
 
-    def delete_my_review(self) -> None:
+    def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
         self.open_review_menu()
         self.click_delete()
         self.confirm_delete_if_present()
 
-        self.driver.get(Urls.PRODUCT_ORANGES)
-        WebDriverWait(self.driver, 5).until(lambda d: True)
+        self.refresh_product_page(product_url)
+
+        if not self.is_review_form_visible():
+            raise AssertionError("After deleting, review form still not visible (delete may have failed).")
