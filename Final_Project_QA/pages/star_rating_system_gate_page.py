@@ -1,7 +1,7 @@
 import re
 import time
 
-from selenium.common.exceptions import TimeoutException, StaleElementReferenceException
+from selenium.common.exceptions import TimeoutException, StaleElementReferenceException, NoAlertPresentException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webdriver import WebDriver
 from selenium.webdriver.support.ui import WebDriverWait
@@ -195,54 +195,46 @@ class StarRatingSystemGate:
         self.driver.refresh()
 
         for i in range(attempts):
-            # If form is already visible, deletion already succeeded
+
             if self.is_review_form_visible():
                 return
 
-            # Try to open the 3-dots menu and click delete
             try:
                 self.open_review_menu()
                 time.sleep(0.5)
                 self.click_delete()
             except Exception:
-                # If menu not found / delete not clickable, try refresh and retry
+
                 self.driver.refresh()
                 time.sleep(1)
                 continue
 
-            # Confirm browser alert (Are you sure...) if it appears
             try:
                 alert = WebDriverWait(self.driver, 6).until(EC.alert_is_present())
                 alert.accept()
             except TimeoutException:
-                # Some runs may not show an alert; that's fine
+
                 pass
             except NoAlertPresentException:
                 pass
 
-            # Give the site a moment, then refresh and check again
             time.sleep(1)
             self.driver.get(product_url)
             self.driver.refresh()
 
-            # Wait until either the form OR the restriction is visible
             try:
                 self.wait_for_form_or_restriction(timeout=10)
             except TimeoutException:
                 pass
 
-            # If the form is visible now, we're done
+
             if self.is_review_form_visible():
                 return
 
-            # If still "already reviewed", loop and try delete again
             restriction = self.get_restriction_message_safe().lower()
             if "already reviewed" not in restriction:
-                # restriction changed to something else (or disappeared)
-                # treat as success-ish and exit
                 return
 
-        # After all attempts, still not deleted
         restriction = self.get_restriction_message_safe()
         raise AssertionError(
             f"Delete did not take effect after {attempts} attempts. Restriction: '{restriction}'"
