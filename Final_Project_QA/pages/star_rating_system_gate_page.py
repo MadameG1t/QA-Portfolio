@@ -119,13 +119,8 @@ class StarRatingSystemGate:
         return int(m.group(1)) if m else 0
 
     def open_review_menu(self) -> None:
-        self._scroll_to_review_section()
 
-        try:
-            menus = WebDriverWait(self.driver, 5).until(EC.presence_of_all_elements_located(self.MENU_ICON))
-        except TimeoutException:
-            raise AssertionError("No review menu icon found (likely no review exists yet for this user).")
-
+        menus = self.wait.until(EC.presence_of_all_elements_located(self.MENU_ICON))
         for m in menus:
             if m.is_displayed():
                 try:
@@ -133,8 +128,45 @@ class StarRatingSystemGate:
                 except Exception:
                     self.driver.execute_script("arguments[0].click();", m)
                 return
+        raise AssertionError("Review menu icon exists but none are visible/clickable.")
 
-        raise AssertionError("Review menu icons exist, but none are visible/clickable.")
+    def click_delete(self) -> None:
+
+        buttons = self.driver.find_elements(*self.DELETE_BTN)
+        for b in buttons:
+            if b.is_displayed() and b.is_enabled():
+                try:
+                    b.click()
+                except Exception:
+                    self.driver.execute_script("arguments[0].click();", b)
+                return
+        raise AssertionError("No visible Delete button found after opening the review menu.")
+
+    def confirm_browser_delete_popup(self, timeout: int = 5) -> None:
+
+        try:
+            alert = WebDriverWait(self.driver, timeout).until(EC.alert_is_present())
+            alert.accept()
+        except TimeoutException:
+            raise AssertionError("Expected browser delete confirmation popup, but no alert appeared.")
+
+    def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
+        self.open_review_menu()
+        self.click_delete()
+        self.confirm_browser_delete_popup(timeout=5)
+
+        self.driver.get(product_url)
+
+        try:
+            WebDriverWait(self.driver, 8).until(
+                lambda d: self.is_review_form_visible() or "already reviewed" not in d.page_source.lower()
+            )
+        except TimeoutException:
+            restriction = self.get_restriction_message_safe()
+            raise AssertionError(
+                "Delete may have failed: review still appears after refresh. "
+                f"Restriction message (if any): '{restriction}'"
+            )
 
     def is_review_form_visible(self) -> bool:
         try:
@@ -166,22 +198,4 @@ class StarRatingSystemGate:
 
         WebDriverWait(self.driver, 10).until(_form_or_restriction_visible)
 
-    def delete_my_review(self, product_url: str = Urls.PRODUCT_ORANGES) -> None:
-        self.open_review_menu()
-        self.click_delete()
-        self.confirm_browser_delete_popup(timeout=5)
 
-        self.driver.get(product_url)
-
-        if not self.is_review_form_visible():
-            restriction = self.get_restriction_message_safe()
-            raise AssertionError(
-                "Delete may have failed: review form did not re-appear. "
-                f"Restriction message (if any): '{restriction}'"
-            )
-    def click_delete(self) -> None:
-        self._click_locator(self.DELETE_BTN)
-
-    def confirm_browser_delete_popup(self, timeout=5):
-        alert = WebDriverWait(self.driver, timeout).until(EC.alert_is_present())
-        alert.accept()
