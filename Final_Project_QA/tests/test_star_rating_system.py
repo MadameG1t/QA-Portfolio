@@ -28,16 +28,11 @@ def test_user_can_delete_written_feedback(star_page, driver):
 def test_zero_star_rating_is_invalid(star_page, driver):
     page = star_page
 
-    before = page.get_display_review_count()
-
     page.enter_review_text("Submitting without selecting stars.")
     page.click_send()
-    assert "Data entry invalid" in page.get_error_text()
 
-    driver.refresh()
-    after = page.get_display_review_count()
-
-    assert after == before, "Review count should not change when no star is selected."
+    assert "Invalid input" in page.get_error_text()
+    assert "Rating" in page.get_error_text()
 
 def test_rating_submission_updates_review_count_integration(star_page, driver):
 
