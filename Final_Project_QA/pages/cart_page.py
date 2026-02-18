@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 from utils.constants import Urls
@@ -31,6 +32,13 @@ class CartPage:
     def open_cart(self):
         self.driver.get(Urls.CHECKOUT)
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
+
+    def is_cart_loaded(self) -> bool:
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
+            return True
+        except TimeoutException:
+            return False
 
     def open_cart_via_icon(self):
         icon = self.wait.until(EC.visibility_of_element_located(self.CART_ICON))
