@@ -18,23 +18,13 @@ class CartPage:
     TOTAL_TEXT = (By.CSS_SELECTOR, ".total-container h5:last-child")
     REMOVE_FIRST_ITEM_BTN = (By.CSS_SELECTOR, "button.minus")
 
-    def __init__(self, driver: WebDriver, timeout: int = 10):
+    def __init__(self, driver, timeout=10):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
-    def open_cart(self) -> None:
-        try:
-            icon = self.wait.until(EC.presence_of_element_located(self.CART_ICON))
-
-            ActionChains(self.driver).move_to_element(icon).perform()
-
-            self.wait.until(EC.element_to_be_clickable(self.CART_ICON))
-
-            icon.click()
-
-        except TimeoutException:
-
-            self.driver.get(Urls.CHECKOUT)
+    def open_cart(self):
+        self.driver.get(Urls.CHECKOUT)
+        self.wait.until(EC.visibility_of_element_located(self.TOTAL_TEXT))
 
         self.wait.until(EC.visibility_of_element_located(self.TOTAL_TEXT))
 
@@ -42,7 +32,7 @@ class CartPage:
         return self.wait.until(EC.visibility_of_element_located(self.TOTAL_TEXT)).text.strip()
 
     def get_shipping_cost_text(self) -> str:
-        return self.wait.until(EC.visibility_of_element_located(self.SHIPPING_COST)).text.strip()
+        return self.wait.until(EC.visibility_of_element_located(self.SHIPPING_COST_TEXT)).text.strip()
 
     def remove_first_item(self) -> None:
         self.wait.until(EC.element_to_be_clickable(self.REMOVE_FIRST_ITEM_BTN)).click()
