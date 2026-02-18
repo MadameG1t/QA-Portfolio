@@ -2,8 +2,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 from utils.constants import Urls
-from pages.age_gate_page import AgeGatePage
-from pages.store_page import StorePage
 from pages.cart_page import CartPage
 
 
