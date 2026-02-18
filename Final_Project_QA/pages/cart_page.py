@@ -26,7 +26,7 @@ class CartPage:
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
-    def open_cart_via_icon(self):
+    def open_cart(self):
         icon = self.wait.until(EC.element_to_be_clickable(self.CART_ICON))
         ActionChains(self.driver).move_to_element(icon).pause(0.2).click(icon).perform()
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
