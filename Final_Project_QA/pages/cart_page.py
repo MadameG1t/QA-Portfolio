@@ -40,6 +40,9 @@ class CartPage:
         WebDriverWait(self.driver, 10).until(
             lambda d: "/checkout" in d.current_url or d.find_elements(*self.CHECKOUT_CARD)
         )
+
+        print("DEBUG page url:", self.driver.current_url)
+        print("DEBUG icons found:", len(self.driver.find_elements(By.CSS_SELECTOR, ".social-icon-cont .headerIcon")))
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
 
     def is_cart_loaded(self) -> bool:
