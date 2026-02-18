@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.action_chains import ActionChains
+from utils.constants import Urls
 
 
 from utils.helpers import parse_eur
@@ -27,8 +27,7 @@ class CartPage:
         self.wait = WebDriverWait(driver, timeout)
 
     def open_cart(self):
-        icon = self.wait.until(EC.element_to_be_clickable(self.CART_ICON))
-        ActionChains(self.driver).move_to_element(icon).pause(0.2).click(icon).perform()
+        self.driver.get(Urls.CHECKOUT)
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
 
     def get_total(self) -> float:
