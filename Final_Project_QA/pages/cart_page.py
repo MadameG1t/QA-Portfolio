@@ -10,10 +10,7 @@ from utils.helpers import parse_eur
 
 
 class CartPage:
-    CART_ICON = (
-        By.XPATH,
-        "//a[.//svg] | //button[.//svg]"
-    )
+    CART_ICON = (By.CSS_SELECTOR, ".social-icon-cont .headerIcon:nth-child(3)")
 
     CHECKOUT_CARD = (By.CSS_SELECTOR, "div.checkout-card-body")
     TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'total-container')]/h5[2]")
@@ -30,8 +27,16 @@ class CartPage:
         self.wait = WebDriverWait(driver, timeout)
 
     def open_cart(self):
-        self.driver.get(Urls.CHECKOUT)
-        self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
+        icon = self.wait.until(EC.visibility_of_element_located(self.CART_ICON))
+        try:
+            ActionChains(self.driver).move_to_element(icon).pause(0.2).click(icon).perform()
+        except Exception:
+            self.driver.execute_script("arguments[0].click();", icon)
+
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
+        except TimeoutException:
+            raise AssertionError(f"Cart click happened, but checkout did not load. Current URL: {self.driver.current_url}")
 
     def is_cart_loaded(self) -> bool:
         try:
