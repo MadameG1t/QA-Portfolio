@@ -87,7 +87,6 @@ class AgeGatePage:
         self.enter_dob(dob_str)
         self.submit()
 
-        # If it didn't close, surface any visible error (helps debugging)
         if not self.age_gate_closed():
             err = self.get_error_text()
             raise AssertionError(f"Age gate did not close. Error: {err}")

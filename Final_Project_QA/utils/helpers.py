@@ -10,6 +10,9 @@ def date_of_birth_for_age_years(today: date,years: int):
     except ValueError:
         return today.replace(month=2,day=28,year=today.year - years)
 
+def unique_full_name(prefix="Test User"):
+    return f"{prefix} {int(time.time())}"
+
 def date_of_birth_entry_format(d:date,fmt: str = "DD-MM-YYYY"):
 
     if fmt == "DD-MM-YYYY":

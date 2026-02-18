@@ -21,13 +21,14 @@ class RegistrationGatePage:
 
     CREATE_ACCOUNT_LINK = (
         By.XPATH,
-        "//a[contains(@class,'switch-link') and normalize-space()='Create a new account']"
+        "//a[contains(@class,'switch-link') and contains(normalize-space(),'Create a new account')]"
     )
 
     FULL_NAME_INPUT = (By.XPATH, "//input[@placeholder='Full Name']")
     EMAIL_INPUT = (By.XPATH, "//input[@placeholder='Email address']")
     PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='Password']")
     SIGN_UP_BTN = (By.XPATH, "//button[contains(@class,'submit-btn') and normalize-space()='Sign Up']")
+    SUCCESS_TEXT = (By.CSS_SELECTOR, "[role='alert'], .alert, .success, .toast")
 
 
     AUTH_MODAL = (By.CSS_SELECTOR, ".auth-modal, .modal-content")
@@ -37,13 +38,14 @@ class RegistrationGatePage:
     AGE_DOB_INPUT = (By.CSS_SELECTOR, "input[placeholder*='DD'], input[placeholder*='YYYY'], input[type='text']")
     AGE_CONFIRM_BTN = (By.XPATH, "//button[normalize-space()='Enter' or normalize-space()='Confirm' or normalize-space()='Yes']")
 
-    LOGIN_LINK = (
-        By.XPATH, "//a[contains(@class,'switch-link') and contains(.,'Already have an account')]"
+    LOGIN_TAB = (
+        By.XPATH,
+        "//a[contains(@class,'switch-link') and contains(normalize-space(),'Already have an account') and contains(normalize-space(),'Login')]"
     )
 
-    LOGIN_EMAIL_INPUT = (By.CSS_SELECTOR, "input[type='email'].form-input")
-    LOGIN_PASSWORD_INPUT = (By.CSS_SELECTOR, "input[type='password'].form-input")
-    LOGIN_BTN = (By.XPATH, "//button[contains(@class,'submit-btn') and normalize-space()='Sign In']")
+    LOGIN_EMAIL_INPUT = (By.XPATH, "//input[@placeholder='Email address']")
+    LOGIN_PASSWORD_INPUT = (By.XPATH, "//input[@placeholder='Password']")
+    LOGIN_BTN = (By.CSS_SELECTOR, "button.submit-btn")
 
 
     def __init__(self, driver: WebDriver, timeout: int = 10):
@@ -65,6 +67,14 @@ class RegistrationGatePage:
         self.open_registration_via_add_to_cart()
         self.wait.until(EC.element_to_be_clickable(self.CREATE_ACCOUNT_LINK)).click()
         self.wait.until(EC.visibility_of_element_located(self.FULL_NAME_INPUT))
+
+    def is_login_form_visible(self) -> bool:
+        try:
+            self.wait.until(EC.visibility_of_element_located(self.LOGIN_EMAIL_INPUT))
+            self.wait.until(EC.visibility_of_element_located(self.LOGIN_PASSWORD_INPUT))
+            return True
+        except TimeoutException:
+            return False
 
     def ensure_signup_form(self) -> None:
 
@@ -98,6 +108,12 @@ class RegistrationGatePage:
 
         self.wait.until(EC.element_to_be_clickable(self.SIGN_UP_BTN)).click()
 
+    def get_success_text(self) -> str:
+        try:
+            return self.wait.until(EC.visibility_of_element_located(self.SUCCESS_TEXT)).text.strip()
+        except TimeoutException:
+            return ""
+
     def is_error_visible(self) -> bool:
         try:
             el = self.driver.find_element(*self.ERROR_TEXT)
@@ -112,11 +128,14 @@ class RegistrationGatePage:
             return ""
 
     def switch_to_login(self) -> None:
-        self.wait.until(EC.element_to_be_clickable(self.LOGIN_LINK)).click()
+        self.wait.until(EC.element_to_be_clickable(self.LOGIN_TAB)).click()
 
     def login(self, email: str, password: str) -> None:
 
-        self.wait.until(EC.element_to_be_clickable(self.LOGIN_BTN))
+        try:
+            self.wait.until(EC.element_to_be_clickable(self.LOGIN_TAB)).click()
+        except Exception:
+            pass
 
         email_el = self.wait.until(EC.visibility_of_element_located(self.LOGIN_EMAIL_INPUT))
         email_el.clear()
