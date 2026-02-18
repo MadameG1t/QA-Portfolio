@@ -10,7 +10,11 @@ from utils.helpers import parse_eur
 
 
 class CartPage:
-    CART_ICON = (By.CSS_SELECTOR, ".social-icon-cont .headerIcon:nth-child(3)")
+    CART_ICON = (
+        By.XPATH,
+        "//div[contains(@class,'social-icon-cont')]"
+        "//div[contains(@class,'headerIcon')][3]"
+    )
 
     CHECKOUT_CARD = (By.CSS_SELECTOR, "div.checkout-card-body")
     TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'total-container')]/h5[2]")
