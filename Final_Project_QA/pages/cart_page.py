@@ -22,6 +22,10 @@ class CartPage:
             EC.visibility_of_element_located(self.CHECKOUT_CARD)
         )
 
+    PLUS_FIRST = (By.CSS_SELECTOR, ".checkout-card-item-container:first-child button.plus")
+    MINUS_FIRST = (By.CSS_SELECTOR, ".checkout-card-item-container:first-child button.minus")
+    QTY_FIRST = (By.CSS_SELECTOR, ".checkout-card-item-container:first-child input.quantity-input")
+
     TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'total-container')]/h5[2]")
     SHIPMENT_VALUE = (By.XPATH, "//div[contains(@class,'shipment-container')]/h5[2]")
     PRODUCT_TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'product-total-container')]/h5[2]")
@@ -52,6 +56,29 @@ class CartPage:
         print("DEBUG open_cart_via_icon URL:", self.driver.current_url)
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
 
+    def get_first_item_quantity(self) -> int:
+        el = self.wait.until(EC.visibility_of_element_located(self.QTY_FIRST))
+        return int(el.get_attribute("value"))
+
+    def set_first_item_quantity(self, target_qty: int, max_clicks: int = 50) -> None:
+        current = self.get_first_item_quantity()
+        clicks = 0
+
+        while current != target_qty and clicks < max_clicks:
+            if current < target_qty:
+                self.wait.until(EC.element_to_be_clickable(self.PLUS_FIRST)).click()
+            else:
+                self.wait.until(EC.element_to_be_clickable(self.MINUS_FIRST)).click()
+
+            current = self.get_first_item_quantity()
+            clicks += 1
+
+        if current != target_qty:
+            raise AssertionError(f"Could not set quantity to {target_qty}. Current={current}")
+
+    def wait_product_total_to_change(self, old_value: float, timeout: int = 10) -> None:
+        WebDriverWait(self.driver, timeout).until(lambda d: self.get_product_total() != old_value)
+
     def get_total(self) -> float:
         return parse_eur(self.wait.until(EC.visibility_of_element_located(self.TOTAL_VALUE)).text)
 
@@ -63,3 +90,21 @@ class CartPage:
 
     def remove_first_item(self) -> None:
         self.wait.until(EC.element_to_be_clickable(self.REMOVE_FIRST_ITEM_BTN)).click()
+
+    def increase_first_item_until_product_total_at_least(self, target: float, max_clicks: int = 80) -> None:
+        clicks = 0
+        while self.get_product_total() < target and clicks < max_clicks:
+            self.wait.until(EC.element_to_be_clickable(self.PLUS_FIRST)).click()
+            clicks += 1
+
+        if self.get_product_total() < target:
+            raise AssertionError(f"Could not reach product total >= {target}. Current={self.get_product_total()}")
+
+    def decrease_first_item_until_product_total_below(self, target: float, max_clicks: int = 80) -> None:
+        clicks = 0
+        while self.get_product_total() >= target and clicks < max_clicks:
+            self.wait.until(EC.element_to_be_clickable(self.MINUS_FIRST)).click()
+            clicks += 1
+
+        if self.get_product_total() >= target:
+            raise AssertionError(f"Could not get product total < {target}. Current={self.get_product_total()}")
