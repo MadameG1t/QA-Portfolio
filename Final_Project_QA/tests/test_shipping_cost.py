@@ -4,7 +4,7 @@ from pages.cart_page import CartPage
 from utils.constants import Urls
 
 
-def test_shipping_cost_is_5_when_total_below_20(driver):
+def test_shipping_cost_is_5_when_total_below_20(driver, self=None):
     print("STEP 1: opening store")
     driver.get(Urls.STORE)
     print("STEP 2: store opened, passing age gate if present")
@@ -16,6 +16,8 @@ def test_shipping_cost_is_5_when_total_below_20(driver):
     print("STEP 4: product added, opening checkout/cart page")
 
     cart = CartPage(driver)
+    print("DEBUG URL after open_cart:", self.driver.current_url)
+    print("DEBUG title:", self.driver.title)
     cart.open_cart()
     print("STEP 5: checkout opened, reading totals")
 
