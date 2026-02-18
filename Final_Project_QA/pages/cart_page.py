@@ -37,10 +37,10 @@ class CartPage:
         except Exception:
             self.driver.execute_script("arguments[0].click();", icon)
 
-        try:
-            self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
-        except TimeoutException:
-            raise AssertionError(f"Cart click happened, but checkout did not load. Current URL: {self.driver.current_url}")
+        WebDriverWait(self.driver, 10).until(
+            lambda d: "/checkout" in d.current_url or d.find_elements(*self.CHECKOUT_CARD)
+        )
+        self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
 
     def is_cart_loaded(self) -> bool:
         try:
