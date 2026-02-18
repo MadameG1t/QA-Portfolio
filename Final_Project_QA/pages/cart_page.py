@@ -41,5 +41,10 @@ class CartPage:
         return parse_eur(self.wait.until(EC.visibility_of_element_located(self.SHIPMENT_VALUE)).text)
 
     def remove_first_item(self) -> None:
+        old_total = self.wait.until(EC.visibility_of_element_located(self.TOTAL_VALUE)).text.strip()
+
         self.wait.until(EC.element_to_be_clickable(self.REMOVE_FIRST_ITEM_BTN)).click()
-        print("DEBUG checkout url:", self.driver.current_url)
+
+        self.wait.until(lambda d: self.wait.until(
+            EC.visibility_of_element_located(self.TOTAL_VALUE)
+        ).text.strip() != old_total)
