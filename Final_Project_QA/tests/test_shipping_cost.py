@@ -4,6 +4,7 @@ from pages.cart_page import CartPage
 from utils.constants import Urls
 
 
+
 def test_shipping_cost_is_5_when_total_below_20(driver):
     print("STEP 1: opening store")
     driver.get(Urls.STORE)
