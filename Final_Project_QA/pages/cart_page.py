@@ -1,10 +1,12 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 from utils.constants import Urls
 
 
 from utils.helpers import parse_eur
+
 
 class CartPage:
     CART_ICON = (
@@ -30,6 +32,12 @@ class CartPage:
         self.driver.get(Urls.CHECKOUT)
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
 
+    def open_cart_via_icon(self):
+        icon = self.wait.until(EC.visibility_of_element_located(self.CART_ICON))
+        ActionChains(self.driver).move_to_element(icon).pause(0.2).click(icon).perform()
+        print("DEBUG open_cart_via_icon URL:", self.driver.current_url)
+        self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
+
     def get_total(self) -> float:
         return parse_eur(self.wait.until(EC.visibility_of_element_located(self.TOTAL_VALUE)).text)
 
@@ -40,10 +48,4 @@ class CartPage:
         return parse_eur(self.wait.until(EC.visibility_of_element_located(self.SHIPMENT_VALUE)).text)
 
     def remove_first_item(self) -> None:
-        old_total = self.wait.until(EC.visibility_of_element_located(self.TOTAL_VALUE)).text.strip()
-
         self.wait.until(EC.element_to_be_clickable(self.REMOVE_FIRST_ITEM_BTN)).click()
-
-        self.wait.until(lambda d: self.wait.until(
-            EC.visibility_of_element_located(self.TOTAL_VALUE)
-        ).text.strip() != old_total)
