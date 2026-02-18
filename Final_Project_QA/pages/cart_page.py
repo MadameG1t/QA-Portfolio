@@ -9,7 +9,7 @@ from utils.helpers import parse_eur
 class CartPage:
     CART_ICON = (
         By.XPATH,
-        "//a[contains(@href,'checkout')] | //button[contains(@class,'cart')]"
+        "//a[.//svg] | //button[.//svg]"
     )
 
     CHECKOUT_CARD = (By.CSS_SELECTOR, "div.checkout-card-body")
