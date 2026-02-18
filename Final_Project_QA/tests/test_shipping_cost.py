@@ -1,12 +1,43 @@
 import pytest
+
 from pages.cart_page import CartPage
 
 
 @pytest.fixture
-def cart_page(driver, purchased_product):
-    return CartPage(driver)
+def cart_page(cart_ready):
+    page = CartPage(cart_ready)
+    page.open_cart()
+    return page
 
 
-def test_shipping_cost_is_5_when_total_below_20(cart_page):
-    shipment = cart_page.get_shipment()
-    assert shipment == 5.0, f"Expected shipment to be 5€, but got {shipment}"
+def test_shipping_is_5_when_product_total_below_20(cart_page):
+    cart_page.decrease_first_item_until_product_total_below(20.0)
+    assert cart_page.get_product_total() < 20.0
+    assert cart_page.get_shipment() == 5.0
+
+
+def test_shipping_is_free_when_product_total_equals_20(cart_page):
+    cart_page.increase_first_item_until_product_total_at_least(20.0)
+    cart_page.decrease_first_item_until_product_total_below(21.0)
+
+    total = cart_page.get_product_total()
+    assert 20.0 <= total < 21.0
+    assert cart_page.get_shipment() == 0.0
+
+
+def test_shipping_is_free_when_product_total_above_20(cart_page):
+    cart_page.increase_first_item_until_product_total_at_least(21.0)
+    assert cart_page.get_product_total() >= 21.0
+    assert cart_page.get_shipment() == 0.0
+
+
+def test_removing_item_recalculates_shipping(cart_page):
+    cart_page.increase_first_item_until_product_total_at_least(21.0)
+    assert cart_page.get_shipment() == 0.0
+
+    cart_page.remove_first_item()
+
+    cart_page.wait_product_total_to_change(old_value=21.0, timeout=10)
+
+    assert cart_page.get_product_total() < 20.0
+    assert cart_page.get_shipment() == 5.0
