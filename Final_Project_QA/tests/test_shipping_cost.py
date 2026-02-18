@@ -16,7 +16,7 @@ def test_shipping_cost_is_5_when_total_below_20(driver):
     print("STEP 4: product added, opening checkout/cart page")
 
     cart = CartPage(driver)
-    cart.open_cart()  # direct URL open (stable)
+    cart.open_cart()
     print("STEP 5: checkout opened, reading totals")
 
     total_text = cart.get_total_text()
