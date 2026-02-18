@@ -4,8 +4,7 @@ from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
-
-
+from utils.constants import Urls
 from utils.helpers import parse_eur
 
 
@@ -17,6 +16,12 @@ class CartPage:
     )
 
     CHECKOUT_CARD = (By.CSS_SELECTOR, "div.checkout-card-body")
+
+    def wait_until_loaded(self, timeout=10):
+        WebDriverWait(self.driver, timeout).until(
+            EC.visibility_of_element_located(self.CHECKOUT_CARD)
+        )
+
     TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'total-container')]/h5[2]")
     SHIPMENT_VALUE = (By.XPATH, "//div[contains(@class,'shipment-container')]/h5[2]")
     PRODUCT_TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'product-total-container')]/h5[2]")
@@ -31,18 +36,7 @@ class CartPage:
         self.wait = WebDriverWait(driver, timeout)
 
     def open_cart(self):
-        icon = self.wait.until(EC.visibility_of_element_located(self.CART_ICON))
-        try:
-            ActionChains(self.driver).move_to_element(icon).pause(0.2).click(icon).perform()
-        except Exception:
-            self.driver.execute_script("arguments[0].click();", icon)
-
-        WebDriverWait(self.driver, 10).until(
-            lambda d: "/checkout" in d.current_url or d.find_elements(*self.CHECKOUT_CARD)
-        )
-
-        print("DEBUG page url:", self.driver.current_url)
-        print("DEBUG icons found:", len(self.driver.find_elements(By.CSS_SELECTOR, ".social-icon-cont .headerIcon")))
+        self.driver.get(Urls.CHECKOUT)
         self.wait.until(EC.visibility_of_element_located(self.CHECKOUT_CARD))
 
     def is_cart_loaded(self) -> bool:
