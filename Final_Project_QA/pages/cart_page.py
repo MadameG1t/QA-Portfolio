@@ -7,10 +7,20 @@ from selenium.webdriver.common.action_chains import ActionChains
 from utils.helpers import parse_eur
 
 class CartPage:
+    CART_ICON = (
+        By.XPATH,
+        "//a[contains(@href,'checkout')] | //button[contains(@class,'cart')]"
+    )
+
     CHECKOUT_CARD = (By.CSS_SELECTOR, "div.checkout-card-body")
     TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'total-container')]/h5[2]")
     SHIPMENT_VALUE = (By.XPATH, "//div[contains(@class,'shipment-container')]/h5[2]")
     PRODUCT_TOTAL_VALUE = (By.XPATH, "//div[contains(@class,'product-total-container')]/h5[2]")
+
+    REMOVE_FIRST_ITEM_BTN = (
+        By.CSS_SELECTOR,
+        ".basket-items-container .checkout-card-item-container:first-child a.remove-icon"
+    )
 
     def __init__(self, driver, timeout=10):
         self.driver = driver
