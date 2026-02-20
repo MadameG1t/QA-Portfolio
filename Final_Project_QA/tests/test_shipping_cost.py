@@ -1,11 +1,20 @@
 import pytest
 
+from utils.constants import Urls
 from pages.cart_page import CartPage
 
+@pytest.fixture
+def cart_on_checkout(purchased_product):
+    driver = purchased_product
+    driver.get(Urls.CHECKOUT)
+
+    cart = CartPage(driver)
+    cart.wait_until_loaded(timeout=15)
+    return driver
 
 @pytest.fixture
-def cart_page(cart_ready):
-    page = CartPage(cart_ready)
+def cart_page(cart_on_checkout):
+    page = CartPage(cart_on_checkout)
     page.open_cart()
     return page
 

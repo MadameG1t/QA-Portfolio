@@ -107,7 +107,7 @@ def purchased_product(driver):
     )
 
     driver.get(Urls.PRODUCT_ORANGES)
-    return True
+    return driver
 
 
 @pytest.fixture

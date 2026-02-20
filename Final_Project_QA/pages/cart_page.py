@@ -108,3 +108,12 @@ class CartPage:
 
         if self.get_product_total() >= target:
             raise AssertionError(f"Could not get product total < {target}. Current={self.get_product_total()}")
+
+    def wait_shipment_to_be(self, expected: float, timeout: int = 10) -> None:
+        WebDriverWait(self.driver, timeout).until(lambda d: self.get_shipment() == expected)
+
+    def wait_product_total_below(self, threshold: float, timeout: int = 10) -> None:
+        WebDriverWait(self.driver, timeout).until(lambda d: self.get_product_total() < threshold)
+
+    def wait_product_total_at_least(self, threshold: float, timeout: int = 10) -> None:
+        WebDriverWait(self.driver, timeout).until(lambda d: self.get_product_total() >= threshold)
