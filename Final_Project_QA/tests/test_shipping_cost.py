@@ -50,3 +50,18 @@ def test_removing_item_recalculates_shipping(cart_page):
 
     assert cart_page.get_product_total() < 20.0
     assert cart_page.get_shipment() == 5.0
+
+def test_shipping_recalculates_when_total_drops_below_20(cart_page):
+    cart_page.increase_first_item_until_product_total_at_least(21.0)
+    cart_page.wait_shipment_to_be(0.0)
+
+    cart_page.decrease_first_item_until_product_total_below(20.0)
+    cart_page.wait_product_total_below(20.0)
+
+    actual_shipment = cart_page.get_shipment()
+
+    assert actual_shipment == 5.0, (
+        "Product quantity reduced value under 20€, "
+        "shipment cost not readjusted. "
+        f"Expected shipment: 5.0€, Actual shipment: {actual_shipment}€"
+    )
