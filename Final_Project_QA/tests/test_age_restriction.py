@@ -45,10 +45,13 @@ def _bug_outcome(case_name: str, *, dob: str, underage_text: str, error_text: st
 )
 def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
     page = AgeGatePage(driver)
-    page.open(Urls.HOME)
-    time.sleep(DEBUG_SLEEP)
 
+    driver.delete_all_cookies()
+    driver.execute_script("window.localStorage.clear(); window.sessionStorage.clear();")
+
+    page.open(Urls.HOME)
     page.go_to_store()
+
     time.sleep(DEBUG_SLEEP)
 
     assert page.wait_for_age_gate(), "Age gate did not appear on store page."
