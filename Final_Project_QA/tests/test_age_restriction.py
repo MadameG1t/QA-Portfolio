@@ -52,8 +52,6 @@ def test_age_gate_cases(driver, case_name, offset_days, custom_dob, expected):
     page.open(Urls.HOME)
     page.go_to_store()
 
-    time.sleep(DEBUG_SLEEP)
-
     assert page.wait_for_age_gate(), "Age gate did not appear on store page."
 
     if offset_days is not None:
