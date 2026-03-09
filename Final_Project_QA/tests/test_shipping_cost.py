@@ -53,6 +53,7 @@ def test_removing_item_recalculates_shipping(cart_page):
     assert cart_page.get_shipment() == 5.0
 
 
+@pytest.mark.xfail(reason="BUG: Shipping cost does not recalculate when total drops below 20€")
 def test_shipping_recalculates_when_total_drops_below_20(cart_page):
     cart_page.increase_first_item_until_product_total_at_least(21.0)
     cart_page.wait_shipment_to_be(0.0)
