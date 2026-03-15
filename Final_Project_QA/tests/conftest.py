@@ -11,6 +11,7 @@ from pages.registration_gate_page import RegistrationGatePage
 from pages.store_page import StorePage
 from pages.star_rating_system_gate_page import StarRatingSystemGate
 from pages.Checkout_page import CheckoutPage
+from pages.cart_page import CartPage
 
 from utils.constants import Urls, TestUsers, CheckoutData
 from utils.helpers import unique_email, unique_full_name
@@ -106,9 +107,23 @@ def purchased_product(driver):
     )
 
     driver.get(Urls.PRODUCT_ORANGES)
-    return True
+    return driver
 
 
 @pytest.fixture
 def star_page(driver, purchased_product):
     return StarRatingSystemGate(driver)
+
+@pytest.fixture
+def cart_on_checkout(driver):
+    driver.get(Urls.STORE)
+    AgeGatePage(driver).pass_age_gate_if_present()
+
+    StorePage(driver).add_first_product_to_cart_with_quantity(1)
+
+    driver.get(Urls.CHECKOUT)
+
+    cart = CartPage(driver)
+    cart.wait_until_loaded()
+
+    return cart

@@ -1,6 +1,7 @@
 from datetime import date
 from datetime import timedelta
 import time
+import re
 
 
 def date_of_birth_for_age_years(today: date,years: int):
@@ -28,3 +29,10 @@ def add_days(d: date, days: int) -> date:
 
 def unique_email(prefix="qa"):
     return f"{prefix}_{time.time_ns()}@example.com"
+
+def parse_eur(text: str) -> float:
+
+    t = text.replace("€", "").strip()
+    t = t.replace(",", ".")
+    m = re.search(r"\d+(\.\d+)?", t)
+    return float(m.group()) if m else 0.0
