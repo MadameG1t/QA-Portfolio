@@ -1,21 +1,22 @@
-with open("olympic-medals.csv", "r") as infile:
-    header = infile.readline()
+import csv
+import os
 
-    for line in infile:
-        parts = line.strip().split(",")
+print(os.getcwd())
 
-        if len(parts) < 5:
+with open("olympic-medals.csv", "r", newline="") as infile:
+    reader = csv.reader(infile)
+    next(reader)
+
+    for row in reader:
+        if len(row) < 5:
             continue
 
-        country = parts[1].replace('"', '')
-
-        gold = int(parts[2])
-        silver = int(parts[3])
-        bronze = int(parts[4])
+        country = row[1].strip()
+        gold = int(row[2])
+        silver = int(row[3])
+        bronze = int(row[4])
 
         total = gold + silver + bronze
 
-        filename = f"{country}.txt"
-
-        with open(filename, "w") as outfile:
+        with open(f"{country}.txt", "w") as outfile:
             outfile.write(str(total))
