@@ -5,9 +5,12 @@ with open("olympic-medals.csv", "r") as infile, open("olympic-medals-total10.csv
     for line in infile:
         parts = line.strip().split(",")
 
-        gold = int(parts[1])
-        silver = int(parts[2])
-        bronze = int(parts[3])
+        if len(parts) < 5:
+            continue
+
+        gold = int(parts[2])
+        silver = int(parts[3])
+        bronze = int(parts[4])
 
         total = gold + silver + bronze
 
